@@ -9,3 +9,8 @@ We are releasing it into open source for the benefit of community and in accorda
 
 Going forward, we intend to maintain this as per the APIs released by GSTN. We solicit support and suggestions of the community in this regard.
 
+TODO:
+- Handle multi file GETs
+- Handle Error codes
+- Incorporate ESign/DSC
+- Incorporate Ledger API
