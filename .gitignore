@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/GSTN.API.Library/bin/Debug
+/GSTN.API.Console/bin/Debug
+/GSTN.API.Console/obj/Debug
+/.vs/GSTN.API/v14/.suo
+/GSTN.API.Library/obj/Debug
+/packages

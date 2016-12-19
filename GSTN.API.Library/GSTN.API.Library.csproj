@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B3FC4B26-9C24-43FF-B55F-3B1AE5642050}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GSTN.API.Library</RootNamespace>
+    <AssemblyName>GSTN.API.Library</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>risersoft.shared.cloud.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>risersoft.shared.cloud.xml</DocumentationFile>
+    <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Clients\EncryptionUtils.cs" />
+    <Compile Include="Clients\GSTNApiClientBase.cs" />
+    <Compile Include="Clients\GSTNAuthClient.cs" />
+    <Compile Include="Clients\GSTNReturnsClient.cs" />
+    <Compile Include="Clients\GSTR1ApiClient.cs" />
+    <Compile Include="Clients\GSTR2ApiClient.cs" />
+    <Compile Include="Clients\GSTR3ApiClient.cs" />
+    <Compile Include="Models\ApiResult.cs" />
+    <Compile Include="Models\Auth\AuthModel.cs" />
+    <Compile Include="Models\GSTNConstants.cs" />
+    <Compile Include="Models\GSTR1\ATAOutward.cs" />
+    <Compile Include="Models\GSTR1\ATOutward.cs" />
+    <Compile Include="Models\GSTR1\B2bAOutward.cs" />
+    <Compile Include="Models\GSTR1\B2bOutward.cs" />
+    <Compile Include="Models\GSTR1\B2CLAOutward.cs" />
+    <Compile Include="Models\GSTR1\B2CLOutward.cs" />
+    <Compile Include="Models\GSTR1\B2CSAOutward.cs" />
+    <Compile Include="Models\GSTR1\B2CSOutward.cs" />
+    <Compile Include="Models\GSTR1\CDNAOutward.cs" />
+    <Compile Include="Models\GSTR1\CDNOutward.cs" />
+    <Compile Include="Models\GSTR1\EComOutward.cs" />
+    <Compile Include="Models\GSTR1\Exp.cs" />
+    <Compile Include="Models\GSTR1\ExpA.cs" />
+    <Compile Include="Models\GSTR1\GSTR1Total.cs" />
+    <Compile Include="Models\GSTR1\NilRatedOutward.cs" />
+    <Compile Include="Models\GSTR1\SummaryOutward.cs" />
+    <Compile Include="Models\GSTR1\TxpOutward.cs" />
+    <Compile Include="Models\GSTR2\B2bAInward.cs" />
+    <Compile Include="Models\GSTR2\B2bInward.cs" />
+    <Compile Include="Models\GSTR2\CdnAInward.cs" />
+    <Compile Include="Models\GSTR2\CdnInward.cs" />
+    <Compile Include="Models\GSTR2\GSTR2Total.cs" />
+    <Compile Include="Models\GSTR2\ImpG.cs" />
+    <Compile Include="Models\GSTR2\ImpGA.cs" />
+    <Compile Include="Models\GSTR2\ImpS.cs" />
+    <Compile Include="Models\GSTR2\ImpSA.cs" />
+    <Compile Include="Models\GSTR2\IsdRcd.cs" />
+    <Compile Include="Models\GSTR2\ItcRcd.cs" />
+    <Compile Include="Models\GSTR2\ItcRvsl.cs" />
+    <Compile Include="Models\GSTR2\NilRatedInward.cs" />
+    <Compile Include="Models\GSTR2\SummaryInward.cs" />
+    <Compile Include="Models\GSTR2\TcsData.cs" />
+    <Compile Include="Models\GSTR2\TdsCredit.cs" />
+    <Compile Include="Models\GSTR2\Txli.cs" />
+    <Compile Include="Models\GSTR2\TxliA.cs" />
+    <Compile Include="Models\GSTR2\Txpd.cs" />
+    <Compile Include="Models\GSTR3\GSTR3SaveModel.cs" />
+    <Compile Include="Models\GSTR3\GSTR3Total.cs" />
+    <Compile Include="Models\GSTR3\InS.cs" />
+    <Compile Include="Models\GSTR3\Out.cs" />
+    <Compile Include="Models\GSTR3\PayDet.cs" />
+    <Compile Include="Models\GSTR3\RfClm.cs" />
+    <Compile Include="Models\GSTR3\Tod.cs" />
+    <Compile Include="My Project\AssemblyInfo.cs" />
+    <Compile Include="My Project\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Prompts.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="risersoft.shared" />
+    <Import Include="risersoft.shared.dal" />
+    <Import Include="risersoft.shared.portable" />
+    <Import Include="risersoft.shared.portable.Proxies" />
+    <Import Include="risersoft.shared2" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Threading.Tasks" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
