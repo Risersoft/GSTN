@@ -9,6 +9,12 @@ We are releasing it into open source for the benefit of community and in accorda
 
 Going forward, we intend to maintain this as per the APIs released by GSTN. We solicit support and suggestions of the community in this regard.
 
+Usage:
+- GSTN is constantly evolving the APIs. Current version is 0.1
+- Hence, it is recommended to use the GSTN.API.Library.dll directly in your projects
+- This will enable easy updation in case of change
+
+
 TODO:
 - Handle multi file GETs
 - Handle Error codes
