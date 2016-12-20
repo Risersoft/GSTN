@@ -17,9 +17,9 @@ namespace GSTN.API
 
 	public class GSTNReturnsClient : GSTNApiClientBase
 	{
-		IAuthProvider provider;
+		IGSTNAuthProvider provider;
 		//action_required=“Y|N“
-		public GSTNReturnsClient(IAuthProvider AuthProvider, string path) : base(path)
+		public GSTNReturnsClient(IGSTNAuthProvider AuthProvider, string path) : base(path)
 		{
 			provider = AuthProvider;
 		}

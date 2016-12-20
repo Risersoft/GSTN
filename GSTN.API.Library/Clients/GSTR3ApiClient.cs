@@ -16,7 +16,7 @@ namespace GSTN.API
 	public class GSTR3ApiClient : GSTNReturnsClient
 	{
 
-		public GSTR3ApiClient(IAuthProvider provider) : base(provider, "/taxpayerapi/v0.1/returns/gstr3")
+		public GSTR3ApiClient(IGSTNAuthProvider provider) : base(provider, "/taxpayerapi/v0.1/returns/gstr3")
 		{
 		}
 

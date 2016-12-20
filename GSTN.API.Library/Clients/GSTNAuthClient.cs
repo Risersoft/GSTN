@@ -14,14 +14,14 @@ using GSTN.API;
 using GSTN.API.Auth;
 namespace GSTN.API
 {
-	public class GSTNAuthClient : GSTNApiClientBase, IAuthProvider
+	public class GSTNAuthClient : GSTNApiClientBase, IGSTNAuthProvider
 	{
 
 		TokenResponseModel token;
 		public string AuthToken { get; set; }
 		public byte[] DecryptedKey { get; set; }
 		public string username { get; set; }
-		string IAuthProvider.Username {
+		string IGSTNAuthProvider.Username {
 			get { return username; }
 			set { username = value; }
 		}
@@ -74,7 +74,7 @@ namespace GSTN.API
 }
 namespace GSTN.API
 {
-	public interface IAuthProvider
+	public interface IGSTNAuthProvider
 	{
 		string Username { get; set; }
 		string AuthToken { get; set; }

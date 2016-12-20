@@ -17,7 +17,7 @@ namespace GSTN.API
 	{
 
 		//action_required=“Y|N“
-		public GSTR2ApiClient(IAuthProvider provider) : base(provider, "/taxpayerapi/v0.1/returns/gstr2")
+		public GSTR2ApiClient(IGSTNAuthProvider provider) : base(provider, "/taxpayerapi/v0.1/returns/gstr2")
 		{
 		}
 
