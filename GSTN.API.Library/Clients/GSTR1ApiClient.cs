@@ -430,13 +430,13 @@ namespace GSTN.API
 
         }
         //This API Is used To save entire GSTR1 invoices
-        public GSTNResult<SaveInfo> Save(GSTR1Total data)
+        public GSTNResult<PutInfo> Save(GSTR1Total data)
         {
             var model = this.Encrypt(data);
             model.action = "RETSAVE";
             var info = this.Put<UnsignedDataInfo, ResponseDataInfo>(model);
-            var output = this.Decrypt<SaveInfo>(info.Data);
-            var model2 = this.BuildResult<SaveInfo>(info, output);
+            var output = this.Decrypt<PutInfo>(info.Data);
+            var model2 = this.BuildResult<PutInfo>(info, output);
             return model2;
         }
         //This API Is used To submit GSTR1 return

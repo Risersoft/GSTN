@@ -24,6 +24,10 @@ namespace GSTN.API.Console
             System.Console.WriteLine("Press any key to start GSTR3");
             System.Console.ReadKey(false);
             TestGSTR3(gstin, fp);
+            
+            System.Console.WriteLine("Press any key to start Ledger");
+            System.Console.ReadKey(false);
+            TestLedger(gstin, "19-08-2016", "20-09-2016");
 
             System.Console.WriteLine("Press any key to end this program");
             System.Console.ReadKey(false);
@@ -72,6 +76,15 @@ namespace GSTN.API.Console
             model2.rf_clm = model.rf_clm;
             var result3 = client2.Save(model2);
             var result4 = client2.File(model, "xx", "DSC", "kjdkjdkdkdkdkd");
+        }
+        private static void TestLedger(string gstin, string fr_dt,string to_dt)
+        {
+            GSTNAuthClient client = new GSTNAuthClient();
+            var result = client.RequestOTP(GSTNConstants.testUser);
+            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
+
+            LedgerApiClient client2 = new LedgerApiClient(client);
+            var info = client2.GetCashDtl(gstin, fr_dt,to_dt).Data;
         }
     }
 }

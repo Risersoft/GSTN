@@ -90,6 +90,7 @@
     <Compile Include="Clients\GSTR1ApiClient.cs" />
     <Compile Include="Clients\GSTR2ApiClient.cs" />
     <Compile Include="Clients\GSTR3ApiClient.cs" />
+    <Compile Include="Clients\LedgerApiClient.cs" />
     <Compile Include="Models\ApiResult.cs" />
     <Compile Include="Models\Auth\AuthModel.cs" />
     <Compile Include="Models\GSTNConstants.cs" />
@@ -136,6 +137,12 @@
     <Compile Include="Models\GSTR3\PayDet.cs" />
     <Compile Include="Models\GSTR3\RfClm.cs" />
     <Compile Include="Models\GSTR3\Tod.cs" />
+    <Compile Include="Models\Ledger\CashLedgerDetails.cs" />
+    <Compile Include="Models\Ledger\ITCLedgerDetails.cs" />
+    <Compile Include="Models\Ledger\LedgerSummary.cs" />
+    <Compile Include="Models\Ledger\TaxLedgerDetails.cs" />
+    <Compile Include="Models\Ledger\UtilizeCashModel.cs" />
+    <Compile Include="Models\Ledger\UtilizeITCModel.cs" />
     <Compile Include="My Project\AssemblyInfo.cs" />
     <Compile Include="My Project\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

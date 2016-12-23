@@ -1,4 +1,4 @@
-# GSTN
+# GSTN 
 GSTN API Client
 
 This project is a strongly typed client for GSTN APIs as per http://developer.gstsystem.co.in/apiportal/
@@ -14,10 +14,15 @@ Usage:
 - Hence, it is recommended to use the GSTN.API.Library.dll directly in your projects
 - This will enable easy updation in case of change
 
+API Status:
+|        | Done                 | Pending      |
+|--------|----------------------|--------------|
+| Auth   | OTPRequest AuthToken | RefreshToken |
+| GSTR1  | Get, Save            | Esign / DSC  |
+| GSTR2  | Get, Save            | Esign / DSC  |
+| GSTR3  | Get, Save            | Esign / DSC  |
+| Legder | Get, Save            |              |
 
 TODO:
 - Handle multi file GETs
 - Handle Error codes
-- Handle Token Refresh
-- Incorporate ESign/DSC
-- Incorporate Ledger API

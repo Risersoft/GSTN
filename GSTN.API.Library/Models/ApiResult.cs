@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace GSTN.API
 {
-    public class SaveInfo
+    public class PutInfo
     {
         public string trans_id { get; set; }
+    }
+    public class PostInfo
+    {
+        public string stscd { get; set; }
+        public string db_no { get; set; }
     }
     public class GenerateRequestInfo
     {
