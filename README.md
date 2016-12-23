@@ -15,6 +15,7 @@ Usage:
 - This will enable easy updation in case of change
 
 API Status:
+
 |        | Done                 | Pending      |
 |--------|----------------------|--------------|
 | Auth   | OTPRequest AuthToken | RefreshToken |
