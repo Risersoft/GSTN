@@ -14,17 +14,28 @@ Usage:
 - Hence, it is recommended to use the GSTN.API.Library.dll directly in your projects
 - This will enable easy updation in case of change
 
-API Status:
+Status:
 
-|        | Done                 | Pending      |
-|--------|----------------------|--------------|
-| Auth   | OTPRequest AuthToken | RefreshToken |
-| GSTR1  | Get, Save            | Esign / DSC  |
-| GSTR2  | Get, Save            | Esign / DSC  |
-| GSTR3  | Get, Save            | Esign / DSC  |
-| Legder | Get, Save            |              |
+| API    | Implemented           | 
+|--------|-----------------------|
+| Auth   | OTPRequest, AuthToken |
+| GSTR1  | Get, Save             |
+| GSTR2  | Get, Save             |
+| GSTR3  | Get, Save             |
+| Legder | Get, Save             |
 
-TODO:
-- Handle multi file GETs
-- Handle Error codes
-- CSV format definition and JSON conversion
+
+| API    | Pending               | 
+|--------|-----------------------|
+| Auth   | RefreshToken          |
+| File   | Esign / DSC           |
+| GET    | Multi File            | 
+
+
+| General                                                  |
+|----------------------------------------------------------|
+|  - Error Codes                                           | 
+|  - CSV format definition and JSON conversion             |
+|  - Sample Pass Through Web API for GSP use               |
+
+
