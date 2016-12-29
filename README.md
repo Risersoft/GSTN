@@ -32,7 +32,7 @@ Status:
 | GET    | Multi File            | 
 
 
-| General                                                  |
+| TODO                                                     |
 |----------------------------------------------------------|
 |  - Error Codes                                           | 
 |  - CSV format definition and JSON conversion             |
