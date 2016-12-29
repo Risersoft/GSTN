@@ -12,6 +12,7 @@ using Microsoft.Owin.Infrastructure;
 using Newtonsoft.Json;
 using GSTN.API;
 using System.Threading.Tasks;
+using System.Net.Security;
 
 public abstract class GSTNApiClientBase : IDisposable
 {
@@ -150,7 +151,7 @@ public abstract class GSTNApiClientBase : IDisposable
 		client.DefaultRequestHeaders.Accept.Clear();
 		client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-		return client;
+        return client;
 	}
 
 	protected internal abstract void BuildHeaders(HttpClient client);
@@ -160,14 +161,16 @@ public abstract class GSTNApiClientBase : IDisposable
 		//This function can be used to convert simple API result to ResultInfo based API result
 		GSTNResult<TOutput> resultInfo = new GSTNResult<TOutput>();
 		resultInfo.HttpStatusCode = Convert.ToInt32(response.StatusCode.ToString("D"));
-		if (resultInfo.HttpStatusCode == (int)HttpStatusCode.OK) {
-            var str1 = response.Content.ReadAsStringAsync().Result;
-            System.Console.WriteLine("Obtained Result:" + str1+System.Environment.NewLine);
-            var result = JsonConvert.DeserializeObject<TOutput>(str1);
+        var str1 = response.Content.ReadAsStringAsync().Result;
+        System.Console.WriteLine("Obtained Result:" + str1 + System.Environment.NewLine);
+        if (resultInfo.HttpStatusCode == (int)HttpStatusCode.OK) {
+           var result = JsonConvert.DeserializeObject<TOutput>(str1);
 			resultInfo.Data = result;
-
-		}
-
+            		}
+        else
+        {
+            resultInfo.Message = str1;
+        }
 		return resultInfo;
 	}
 

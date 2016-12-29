@@ -22,7 +22,7 @@ namespace GSTN.API
 		public static X509Certificate2 getPublicKey()
 		{
 			RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
-			X509Certificate2 cert2 = new X509Certificate2("E:\\vs.com\\ERPv2\\FICO\\risersoft.app.exvat\\GSTN_PublicKey.cer");
+			X509Certificate2 cert2 = new X509Certificate2("Resources\\GSTN_PublicKey.cer");
 			return cert2;
 		}
 

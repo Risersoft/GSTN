@@ -4,6 +4,28 @@
         <name>GSTN.API.Library</name>
     </assembly>
     <members>
+        <member name="M:GSTN.API.Common.HttpsWebClientSendSMS(System.String,System.String)">
+             <summary>
+            
+             </summary>
+             <param name="URI"></param>
+             <param name="queryString"></param>
+             <returns></returns>
+        </member>
+        <member name="M:GSTN.API.Common.FileToBytes(System.String)">
+            <summary>
+            Converts the file to bynary stream
+            </summary>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GSTN.API.Common.Generatehash256(System.String)">
+            <summary>
+            Generate Hash value from given string value
+            </summary>
+            <param name="text"></param>
+            <returns>A managed SHA 256 hash value</returns>
+        </member>
         <member name="T:GSTN.API.My.Resources.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.

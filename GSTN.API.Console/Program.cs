@@ -15,7 +15,7 @@ namespace GSTN.API.Console
             string fp = "072016";
             System.Console.WriteLine("Press any key to start GSTR1");
             System.Console.ReadKey(false);
-            TestGSTR1(gstin, fp);
+            var model=TestGSTR1(gstin, fp);
 
             System.Console.WriteLine("Press any key to start GSTR2");
             System.Console.ReadKey(false);
@@ -29,10 +29,34 @@ namespace GSTN.API.Console
             System.Console.ReadKey(false);
             TestLedger(gstin, "19-08-2016", "20-09-2016");
 
+            System.Console.WriteLine("Press any key to start File");
+            System.Console.ReadKey(false);
+            FileGSTR1(model);
+
             System.Console.WriteLine("Press any key to end this program");
             System.Console.ReadKey(false);
         }
-        private static void TestGSTR1(string gstin,string fp)
+        private static void FileGSTR1(GSTR1.SummaryOutward model)
+        {
+            GSTNAuthClient client = new GSTNAuthClient();
+            var result = client.RequestOTP(GSTNConstants.testUser);
+            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
+
+            eSign eSignObj = new eSign();
+            //eSignSettings.PfxPath = PfxPath;
+            //eSignSettings.PfxPassword = PfxPassword;
+            eSignSettings.UIDAICertificatePath = "resources\\uidai_auth_prod.cer";
+            eSignSettings.AuthMode = AuthMode.OTP;
+            //eSignSettings.ASPID = ASPID;
+            //eSignSettings.OTPURL = OTPURL;
+            //eSignSettings.EsignURL = EsignURL;
+
+            GSTR1ApiClient client2 = new GSTR1ApiClient(client);
+            var result4 = client2.File(model, "xx", "DSC", "kjdkjdkdkdkdkd");
+
+        }
+
+        private static GSTR1.SummaryOutward TestGSTR1(string gstin,string fp)
         {
             GSTNAuthClient client = new GSTNAuthClient();
             var result = client.RequestOTP(GSTNConstants.testUser);
@@ -45,7 +69,7 @@ namespace GSTN.API.Console
             var result3 = client2.Save(model);
 
             var model2 = client2.GetSummary(gstin, fp).Data;
-            var result4 = client2.File(model2, "xx", "DSC", "kjdkjdkdkdkdkd");
+            return model2;
         }
         private static void TestGSTR2(string gstin, string fp)
         {
