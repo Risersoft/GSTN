@@ -27,3 +27,4 @@ API Status:
 TODO:
 - Handle multi file GETs
 - Handle Error codes
+- CSV format definition and JSON conversion
