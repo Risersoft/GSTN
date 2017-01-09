@@ -33,6 +33,10 @@ namespace GSTN.API.Console
             System.Console.ReadKey(false);
             FileGSTR1(model);
 
+            System.Console.WriteLine("Press any key to start CSV");
+            System.Console.ReadKey(false);
+            TestCSV(gstin, fp);
+
             System.Console.WriteLine("Press any key to end this program");
             System.Console.ReadKey(false);
         }
@@ -109,6 +113,20 @@ namespace GSTN.API.Console
 
             LedgerApiClient client2 = new LedgerApiClient(client);
             var info = client2.GetCashDtl(gstin, fr_dt,to_dt).Data;
+        }
+        private static string TestCSV(string gstin, string fp)
+        {
+            GSTNAuthClient client = new GSTNAuthClient();
+            var result = client.RequestOTP(GSTNConstants.testUser);
+            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
+
+            GSTR1.GSTR1Total model = new GSTR1.GSTR1Total();
+            GSTR1ApiClient client2 = new GSTR1ApiClient(client);
+            model.b2b = client2.GetB2B(gstin, fp, "Y").Data;
+
+            var client3 = new MxApiClient("http://www.maximprise.com/api/gst");
+            string str1 = client3.Json2CSV(client2.LastJson, "gstr1", "b2b").Data;
+            return str1;
         }
     }
 }

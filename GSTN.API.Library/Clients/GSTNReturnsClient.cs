@@ -18,6 +18,7 @@ namespace GSTN.API
 	public class GSTNReturnsClient : GSTNApiClientBase
 	{
 		IGSTNAuthProvider provider;
+        public string LastJson;
 		//action_required=“Y|N“
 		public GSTNReturnsClient(IGSTNAuthProvider AuthProvider, string path) : base(path)
 		{
@@ -44,6 +45,7 @@ namespace GSTN.API
 				byte[] decodeJson = Convert.FromBase64String(json);
 				string finalJson = Encoding.UTF8.GetString(decodeJson);
 				model = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(finalJson);
+                LastJson = finalJson;
 			}
 			return model;
 		}

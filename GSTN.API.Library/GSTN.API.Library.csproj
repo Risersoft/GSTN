@@ -101,6 +101,7 @@
     <Compile Include="Clients\GSTR2ApiClient.cs" />
     <Compile Include="Clients\GSTR3ApiClient.cs" />
     <Compile Include="Clients\LedgerApiClient.cs" />
+    <Compile Include="Clients\MxApiClient.cs" />
     <Compile Include="Models\ApiResult.cs" />
     <Compile Include="Models\Auth\AuthModel.cs" />
     <Compile Include="Models\GSTNConstants.cs" />
