@@ -29,11 +29,13 @@ Star Attraction
 - CSV to JSON conversion
 
 
-
 | TODO                                                     |
 |----------------------------------------------------------|
 |  - Multi File Get                                        | 
 |  - Error Codes                                           | 
 |  - Sample Pass Through Web API for GSP use               |
+|  - Web App for end-user format conversion                |
+|  - CSV format publishing                                 |
+
 
 
