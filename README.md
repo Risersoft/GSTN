@@ -27,15 +27,13 @@ Status:
 Star Attraction
 - JSON to CSV conversion
 - CSV to JSON conversion
-
+- Try on http://www.risersoft.com/community/gst/convert
 
 | TODO                                                     |
 |----------------------------------------------------------|
 |  - Multi File Get                                        | 
 |  - Error Codes                                           | 
 |  - Sample Pass Through Web API for GSP use               |
-|  - Web App for end-user format conversion                |
-|  - CSV format publishing                                 |
 
 
 
