@@ -16,26 +16,24 @@ Usage:
 
 Status:
 
-| API    | Implemented           | 
-|--------|-----------------------|
-| Auth   | OTPRequest, AuthToken |
-| GSTR1  | Get, Save             |
-| GSTR2  | Get, Save             |
-| GSTR3  | Get, Save             |
-| Legder | Get, Save             |
+| API    | Implemented           | Pending               | 
+|--------|-----------------------|-----------------------|
+| Auth   | OTPRequest, AuthToken | RefreshToken          |
+| GSTR1  | Get, Save             | File - Esign + DSC    |
+| GSTR2  | Get, Save             |     -do-              |
+| GSTR3  | Get, Save             |     -do-              |
+| Legder | Get, Save             |                       |
 
-
-| API    | Pending               | 
-|--------|-----------------------|
-| Auth   | RefreshToken          |
-| File   | Esign / DSC           |
-| GET    | Multi File            | 
-
+Star Attraction
+- JSON to CSV conversion
+- CSV to JSON conversion
+- Try on http://www.risersoft.com/community/gst/convert
 
 | TODO                                                     |
 |----------------------------------------------------------|
+|  - Multi File Get                                        | 
 |  - Error Codes                                           | 
-|  - CSV format definition and JSON conversion             |
 |  - Sample Pass Through Web API for GSP use               |
+
 
 
