@@ -1,4 +1,6 @@
-﻿using GSTN.API;
+﻿using eSignASPLib;
+using eSignASPLib.DTO;
+using GSTN.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +11,14 @@ namespace GSTN.API.Console
 {
     class Program
     {
+        static eSign eSignObj;
         static void Main(string[] args)
         {
             string gstin = "05BDIPA7164F1ZT";
             string fp = "072016";
             System.Console.WriteLine("Press any key to start GSTR1");
             System.Console.ReadKey(false);
-            var model=TestGSTR1(gstin, fp);
+            TestGSTR1(gstin, fp);
 
             System.Console.WriteLine("Press any key to start GSTR2");
             System.Console.ReadKey(false);
@@ -31,7 +34,14 @@ namespace GSTN.API.Console
 
             System.Console.WriteLine("Press any key to start File");
             System.Console.ReadKey(false);
-            FileGSTR1(model);
+            System.Console.Write("Enter path to license file:");
+            string path = System.Console.ReadLine();
+            System.Console.Write("Enter your Aadhar Num:");
+            string aadhaarnum = System.Console.ReadLine();
+            string transactionid = GetOtp(path, aadhaarnum);
+            System.Console.Write("Enter OTP:");
+            string otp = System.Console.ReadLine();
+            FileGSTR1WithESign(gstin,fp, aadhaarnum,transactionid, otp);
 
             System.Console.WriteLine("Press any key to start CSV");
             System.Console.ReadKey(false);
@@ -40,27 +50,47 @@ namespace GSTN.API.Console
             System.Console.WriteLine("Press any key to end this program");
             System.Console.ReadKey(false);
         }
-        private static void FileGSTR1(GSTR1.SummaryOutward model)
+
+        private static string GetOtp(string path, string aadhaarnum)
+        {
+            eSignObj = new eSign(path);    //Get your own license file from e-Mudhra
+            Settings.PfxPath = "resources\\Docsigntest.pfx";
+            Settings.PfxPassword = "emudhra";
+            Settings.UIDAICertificatePath = "resources\\uidai_auth_prod.cer";
+            Settings.AuthMode = AuthMode.OTP;
+            string guid = System.Guid.NewGuid().ToString();
+            Response OTPResponse = eSignObj.GetOTP(aadhaarnum, guid);
+            return guid;
+        }
+        private static void FileGSTR1WithESign(string gstin, string fp,string aadhaarnum, string transactionId, string Otp)
         {
             GSTNAuthClient client = new GSTNAuthClient();
             var result = client.RequestOTP(GSTNConstants.testUser);
             var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
 
-            eSign eSignObj = new eSign();
-            //eSignSettings.PfxPath = PfxPath;
-            //eSignSettings.PfxPassword = PfxPassword;
-            eSignSettings.UIDAICertificatePath = "resources\\uidai_auth_prod.cer";
-            eSignSettings.AuthMode = AuthMode.OTP;
-            //eSignSettings.ASPID = ASPID;
-            //eSignSettings.OTPURL = OTPURL;
-            //eSignSettings.EsignURL = EsignURL;
-
             GSTR1ApiClient client2 = new GSTR1ApiClient(client);
-            var result4 = client2.File(model, "xx", "DSC", "kjdkjdkdkdkdkd");
+            var model2 = client2.GetSummary(gstin, fp).Data;
+            
+            //https://groups.google.com/forum/#!searchin/gst-suvidha-provider-gsp-discussion-group/authorized|sort:relevance/gst-suvidha-provider-gsp-discussion-group/9-_Mk7LatDs/eQ6_1kHTBAAJ
+            //https://groups.google.com/forum/#!searchin/gst-suvidha-provider-gsp-discussion-group/authorized|sort:relevance/gst-suvidha-provider-gsp-discussion-group/acd-F7XPYz4/7z83KM4IBgAJ
+
+            var json2 = Convert.ToBase64String(Encoding.UTF8.GetBytes(client2.LastJson));
+            var json3 = EncryptionUtils.sha256_hash(json2);
+
+            AuthMetaDetails MetaDetails = new AuthMetaDetails();
+            MetaDetails.fdc = "NA";
+            MetaDetails.udc = "NA";//Unique device code. 
+            MetaDetails.pip = "NA";
+            MetaDetails.lot = "P";
+            MetaDetails.lov = "560103";
+            MetaDetails.idc = "NA";
+
+            var json4 = eSignObj.SignText(aadhaarnum, Otp, transactionId, json3, MetaDetails);
+            var result4 = client2.File(model2, json4.SignedText, "Esign", aadhaarnum);
 
         }
 
-        private static GSTR1.SummaryOutward TestGSTR1(string gstin,string fp)
+        private static void TestGSTR1(string gstin,string fp)
         {
             GSTNAuthClient client = new GSTNAuthClient();
             var result = client.RequestOTP(GSTNConstants.testUser);
@@ -72,8 +102,6 @@ namespace GSTN.API.Console
             model.b2cl = client2.GetB2CL(gstin, fp, "01").Data;
             var result3 = client2.Save(model);
 
-            var model2 = client2.GetSummary(gstin, fp).Data;
-            return model2;
         }
         private static void TestGSTR2(string gstin, string fp)
         {
@@ -88,7 +116,6 @@ namespace GSTN.API.Console
             var result3 = client2.Save(model);
 
             var model2 = client2.GetSummary(gstin, fp).Data;
-            var result4 = client2.File(model2, "xx", "DSC", "kjdkjdkdkdkdkd");
         }
         private static void TestGSTR3(string gstin, string fp)
         {
@@ -103,7 +130,6 @@ namespace GSTN.API.Console
             GSTR3.GSTR3SaveModel model2 = new GSTR3.GSTR3SaveModel();
             model2.rf_clm = model.rf_clm;
             var result3 = client2.Save(model2);
-            var result4 = client2.File(model, "xx", "DSC", "kjdkjdkdkdkdkd");
         }
         private static void TestLedger(string gstin, string fr_dt,string to_dt)
         {

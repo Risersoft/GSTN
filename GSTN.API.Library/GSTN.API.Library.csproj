@@ -53,6 +53,14 @@
       <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="eSignASPLib, Version=1.1.6.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\eSignASPLib.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.4.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
@@ -93,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\EncryptionUtils.cs" />
-    <Compile Include="Clients\eSign.cs" />
     <Compile Include="Clients\GSTNApiClientBase.cs" />
     <Compile Include="Clients\GSTNAuthClient.cs" />
     <Compile Include="Clients\GSTNReturnsClient.cs" />
@@ -200,12 +207,17 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="Resources\eSignASPLib.dll" />
     <Content Include="Resources\GSTN_PublicKey.cer">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\itextsharp.dll" />
     <Content Include="Resources\uidai_auth_prod.cer">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Docsigntest.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

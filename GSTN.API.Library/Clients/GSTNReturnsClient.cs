@@ -81,10 +81,11 @@ namespace GSTN.API
 				sid = sid
 			};
 			model.data = data.data;
-			var info = this.Put<SignedDataInfo, ResponseDataInfo>(model);
+			var info = this.Post<SignedDataInfo, ResponseDataInfo>(model);
 			var output = this.Decrypt<FileInfo>(info.Data);
 			var model2 = this.BuildResult<FileInfo>(info, output);
-			return model2;
+            System.Console.WriteLine("Obtained Result:" + model2.Data.ack_num + System.Environment.NewLine);
+            return model2;
 
 		}
 	}

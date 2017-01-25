@@ -174,9 +174,46 @@ namespace GSTN.API
 			return result;
 		}
 
+        public static string sha256_hash(string value)
+        {
+            StringBuilder Sb = new StringBuilder();
+
+            using (SHA256 hash = SHA256Managed.Create())
+            {
+                Byte[] result = hash.ComputeHash(Encoding.UTF8.GetBytes(value));
+
+                foreach (Byte b in result)
+                    Sb.Append(b.ToString("x2"));
+            }
+
+            return Sb.ToString();
+        }
+
+        /// <summary>
+        /// Generate Hash value from given string value
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns>A managed SHA 256 hash value</returns>
+        public static byte[] Generatehash256(string text)
+        {
+            byte[] message = Encoding.UTF8.GetBytes(text);
+
+            UnicodeEncoding UE = new UnicodeEncoding();
+            byte[] hashValue;
+            SHA256Managed hashString = new SHA256Managed();
+            hashValue = hashString.ComputeHash(message);
+            return hashValue;
+        }
 
 
-	}
+        public static byte[] convertStringToByteArray(string str)
+        {
+            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+            return encoding.GetBytes(str);
+        }
+    }
+
 }
+
 
 
