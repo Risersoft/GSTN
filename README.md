@@ -22,7 +22,7 @@ Status:
 | GSTR1  | Get, Save, File       |                       |
 | GSTR2  | Get, Save, File       |                       |
 | GSTR3  | Get, Save, File       |                       |
-| Legder | Get, Save, File       |                       |
+| Ledger | Get, Save             |                       |
 
 Star Attraction
 - JSON to CSV conversion
