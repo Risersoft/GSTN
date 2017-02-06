@@ -27,5 +27,49 @@
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
+        <member name="T:Org.BouncyCastle.Bcpg.OpenPgp.Examples.DetachedSignatureProcessor">
+            A simple utility class that creates seperate signatures for messages and verifies them.
+            <p>
+            To sign a file: DetachedSignatureProcessor -s [-a] fileName secretKey passPhrase.<br/>
+            If -a is specified the output file will be "ascii-armored".</p>
+            <p>
+            To decrypt: DetachedSignatureProcessor -v  fileName signatureFile publicKeyFile.</p>
+            <p>
+            Note: this example will silently overwrite files.
+            It also expects that a single pass phrase
+            will have been used.</p>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.OpenPgp.Examples.DetachedSignatureProcessor.VerifySignature(System.String,System.String,System.IO.Stream)">
+            verify the signature in in against the file fileName.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.OpenPgp.Examples.PgpExampleUtilities.FindSecretKey(Org.BouncyCastle.Bcpg.OpenPgp.PgpSecretKeyRingBundle,System.Int64,System.Char[])">
+            Search a secret key ring collection for a secret key corresponding to keyID if it
+            exists.
+            
+            @param pgpSec a secret key ring collection.
+            @param keyID keyID we want.
+            @param pass passphrase to decrypt secret key with.
+            @return
+            @throws PGPException
+            @throws NoSuchProviderException
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.OpenPgp.Examples.PgpExampleUtilities.ReadPublicKey(System.IO.Stream)">
+            A simple routine that opens a key ring file and loads the first available key
+            suitable for encryption.
+            
+            @param input
+            @return
+            @throws IOException
+            @throws PGPException
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.OpenPgp.Examples.PgpExampleUtilities.ReadSecretKey(System.IO.Stream)">
+            A simple routine that opens a key ring file and loads the first available key
+            suitable for signature generation.
+            
+            @param input stream to read the secret key ring collection from.
+            @return a secret key.
+            @throws IOException on a problem with using the input stream.
+            @throws PGPException if there is an issue parsing the input stream.
+        </member>
     </members>
 </doc>

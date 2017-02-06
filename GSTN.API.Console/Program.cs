@@ -1,8 +1,10 @@
 ﻿using eSignASPLib;
 using eSignASPLib.DTO;
 using GSTN.API;
+using Org.BouncyCastle.Bcpg.OpenPgp.Examples;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,41 +18,67 @@ namespace GSTN.API.Console
         {
             string gstin = "05BDIPA7164F1ZT";
             string fp = "072016";
-            System.Console.WriteLine("Press any key to start GSTR1");
-            System.Console.ReadKey(false);
-            TestGSTR1(gstin, fp);
 
-            System.Console.WriteLine("Press any key to start GSTR2");
-            System.Console.ReadKey(false);
-            TestGSTR2(gstin, fp);
+            System.Console.WriteLine("1=GSTR1, 2=GSTR2, 3=GSTR3, 4=Ledger, 5=File with eSign, 6=CSV conversion, 7=PGP");
+            string selection = System.Console.ReadLine();
 
-            System.Console.WriteLine("Press any key to start GSTR3");
-            System.Console.ReadKey(false);
-            TestGSTR3(gstin, fp);
-            
-            System.Console.WriteLine("Press any key to start Ledger");
-            System.Console.ReadKey(false);
-            TestLedger(gstin, "19-08-2016", "20-09-2016");
-
-            System.Console.WriteLine("Press any key to start File");
-            System.Console.ReadKey(false);
-            System.Console.Write("Enter path to license file:");
-            string path = System.Console.ReadLine();
-            System.Console.Write("Enter your Aadhar Num:");
-            string aadhaarnum = System.Console.ReadLine();
-            string transactionid = GetOtp(path, aadhaarnum);
-            System.Console.Write("Enter OTP:");
-            string otp = System.Console.ReadLine();
-            FileGSTR1WithESign(gstin,fp, aadhaarnum,transactionid, otp);
-
-            System.Console.WriteLine("Press any key to start CSV");
-            System.Console.ReadKey(false);
-            TestCSV(gstin, fp);
+            switch (selection)
+            {
+                case "1":
+                    TestGSTR1(gstin, fp);
+                    break;
+                case "2":
+                    TestGSTR2(gstin, fp);
+                    break;
+                case "3":
+                    TestGSTR3(gstin, fp);
+                    break;
+                case "4":
+                    TestLedger(gstin, "19-08-2016", "20-09-2016");
+                    break;
+                case "5":
+                    System.Console.Write("Enter path to license file:");
+                    string path = System.Console.ReadLine();
+                    System.Console.Write("Enter your Aadhar Num:");
+                    string aadhaarnum = System.Console.ReadLine();
+                    string transactionid = GetOtp(path, aadhaarnum);
+                    System.Console.Write("Enter OTP:");
+                    string otp = System.Console.ReadLine();
+                    FileGSTR1WithESign(gstin, fp, aadhaarnum, transactionid, otp);
+                    break;
+                case "6":
+                    TestCSV(gstin, fp);
+                    break;
+                case "7":
+                    TestPGP("the quick brown fox jumped over the lazy dog");
+                    break;
+            }
 
             System.Console.WriteLine("Press any key to end this program");
             System.Console.ReadKey(false);
         }
 
+        private static void TestPGP(string message)
+        {
+            string pwd = "mypassword";
+            System.IO.Directory.CreateDirectory(@"D:\Keys");
+            PGPSnippet.KeyGeneration.PGPKeyGenerator.GenerateKey("GSTNUser", pwd, @"D:\Keys\");
+            System.Console.WriteLine("Keys Generated Successfully");
+
+            String encoded = DetachedSignatureProcessor.CreateSignature(message, @"D:\Keys\PGPPrivateKey.asc", "signature.asc", pwd.ToCharArray(), true);
+            System.Console.WriteLine("Obtained Signature = " + encoded);
+            bool verified = DetachedSignatureProcessor.VerifySignature(message,  encoded, @"D:\Keys\PGPPublicKey.asc");
+            if (verified)
+            {
+                System.Console.WriteLine("signature verified.");
+            }
+            else
+            {
+                System.Console.WriteLine("signature verification failed.");
+            }
+
+
+        }
         private static string GetOtp(string path, string aadhaarnum)
         {
             eSignObj = new eSign(path);    //Get your own license file from e-Mudhra
