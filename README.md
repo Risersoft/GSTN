@@ -29,12 +29,15 @@ Star Attraction
 - CSV to JSON conversion
 - Try on http://www.risersoft.com/community/gst/convert
 
+GSP-ASP Non-Repdudiation
+- PGP Signature Generation and Verification
+
+
 | TODO                                                     |
 |----------------------------------------------------------|
 |  - Multi File Get                                        | 
 |  - Error Codes                                           | 
 |  - DSC based signing                                     | 
-|  - Sample Pass Through Web API for GSP use               |
 
 
 
