@@ -19,10 +19,10 @@ Status:
 | API    | Implemented           | Pending               | 
 |--------|-----------------------|-----------------------|
 | Auth   | OTPRequest, AuthToken | RefreshToken          |
-| GSTR1  | Get, Save             | File - Esign + DSC    |
-| GSTR2  | Get, Save             |     -do-              |
-| GSTR3  | Get, Save             |     -do-              |
-| Legder | Get, Save             |                       |
+| GSTR1  | Get, Save, File       |                       |
+| GSTR2  | Get, Save, File       |                       |
+| GSTR3  | Get, Save, File       |                       |
+| Ledger | Get, Save             |                       |
 
 Star Attraction
 - JSON to CSV conversion
@@ -33,6 +33,7 @@ Star Attraction
 |----------------------------------------------------------|
 |  - Multi File Get                                        | 
 |  - Error Codes                                           | 
+|  - DSC based signing                                     | 
 |  - Sample Pass Through Web API for GSP use               |
 
 
