@@ -96,6 +96,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\DSCUtils.cs" />
     <Compile Include="Clients\EncryptionUtils.cs" />
     <Compile Include="Clients\GSTNApiClientBase.cs" />
     <Compile Include="Clients\GSTNAuthClient.cs" />

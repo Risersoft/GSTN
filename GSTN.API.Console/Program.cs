@@ -17,9 +17,9 @@ namespace GSTN.API.Console
         static void Main(string[] args)
         {
             string gstin = "05BDIPA7164F1ZT";
-            string fp = "072016";
+            string fp = "012017";
 
-            System.Console.WriteLine("1=GSTR1, 2=GSTR2, 3=GSTR3, 4=Ledger, 5=File with eSign, 6=CSV conversion, 7=PGP");
+            System.Console.WriteLine("1=GSTR1, 2=GSTR2, 3=GSTR3, 4=Ledger, 5=File with eSign, 6=CSV conversion, 7=PGP, 8=File With DSC");
             string selection = System.Console.ReadLine();
 
             switch (selection)
@@ -51,6 +51,11 @@ namespace GSTN.API.Console
                     break;
                 case "7":
                     TestPGP("the quick brown fox jumped over the lazy dog");
+                    break;
+                case "8":
+                    System.Console.Write("Enter your PAN:");
+                    string pan = System.Console.ReadLine();
+                    FileGSTR1WithDSC(gstin, fp, pan);
                     break;
             }
 
@@ -115,6 +120,24 @@ namespace GSTN.API.Console
 
             var json4 = eSignObj.SignText(aadhaarnum, Otp, transactionId, json3, MetaDetails);
             var result4 = client2.File(model2, json4.SignedText, "Esign", aadhaarnum);
+
+        }
+        private static void FileGSTR1WithDSC(string gstin, string fp, string pan)
+        {
+            GSTNAuthClient client = new GSTNAuthClient();
+            var result = client.RequestOTP(GSTNConstants.testUser);
+            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
+
+            GSTR1ApiClient client2 = new GSTR1ApiClient(client);
+            var model2 = client2.GetSummary(gstin, fp).Data;
+
+            var json2 = Convert.ToBase64String(Encoding.UTF8.GetBytes(client2.LastJson));
+            var json3 = EncryptionUtils.sha256_hash(json2);
+
+            var cert = DSCUtils.getCertificate();
+
+            var json4 =Encoding.Unicode.GetString(DSCUtils.Sign(  json3, cert));
+            var result4 = client2.File(model2, json4, "DSC", pan);
 
         }
 
