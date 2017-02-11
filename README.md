@@ -37,7 +37,6 @@ GSP-ASP Non-Repdudiation
 |----------------------------------------------------------|
 |  - Multi File Get                                        | 
 |  - Error Codes                                           | 
-|  - DSC based signing                                     | 
 
 
 
