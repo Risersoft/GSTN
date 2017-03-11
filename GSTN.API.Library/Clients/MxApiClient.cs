@@ -12,7 +12,7 @@ namespace GSTN.API
 
     {
         string base_url;
-        public MxApiClient(string path) : base("")
+        public MxApiClient(string path) : base("","")
 		{
             base_url = path;
         }

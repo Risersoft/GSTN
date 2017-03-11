@@ -17,38 +17,26 @@ namespace GSTN.API
     {
 
         //action_required=“Y|N“
-        public GSTR1ApiClient(IGSTNAuthProvider provider) : base(provider, "/taxpayerapi/v0.1/returns/gstr1")
+        public GSTR1ApiClient(IGSTNAuthProvider provider,string gstin, string ret_period) : base(provider, "/taxpayerapi/v0.2/returns/gstr1",gstin,ret_period)
         {
         }
 
         //API call for getting all B2B invoices for a return period.
-        public GSTNResult<List<B2bOutward>> GetB2B(string gstin, string ret_prd, string action_required)
+        public GSTNResult<List<B2bOutward>> GetB2B(string action_required)
         {
-            this.PrepareQueryString(new Dictionary<string, string> {
-                {
-                    "gstin",
-                    gstin
-                },
-                {
-                    "action",
-                    "B2B"
-                },
-                {
-                    "ret_period",
-                    ret_prd
-                },
-                {
-                    "action_required",
-                    action_required
-                }
-            });
+            var dic = new Dictionary<string, string>();
+            dic.Add("gstin", this.gstin);
+            dic.Add("ret_period", this.ret_period);
+            dic.Add("action", "B2B");
+            if (!string.IsNullOrEmpty(action_required)) dic.Add("action_required",action_required);
+            this.PrepareQueryString(dic);
             var info = this.Get<ResponseDataInfo>();
             var output = this.Decrypt<GSTR1Total>(info.Data);
             var model = this.BuildResult<List<B2bOutward>>(info, output.b2b);
             return model;
         }
         //API call  for getting all B2B amended invoices for a return period.
-        public GSTNResult<List<B2bAOutward>> GetB2BA(string gstin, string ret_prd, string action_required)
+        public GSTNResult<List<B2bAOutward>> GetB2BA(string action_required)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -61,7 +49,7 @@ namespace GSTN.API
                 },
                 {
                     "ret_period",
-                    ret_prd
+                   this.ret_period
                 },
                 {
                     "action_required",
@@ -75,7 +63,7 @@ namespace GSTN.API
 
         }
         //API call  for getting all B2C Large invoices for a return period.
-        public GSTNResult<List<B2clOutward>> GetB2CL(string gstin, string ret_prd, string state_cd)
+        public GSTNResult<List<B2clOutward>> GetB2CL(string state_cd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -88,7 +76,7 @@ namespace GSTN.API
                 },
                 {
                     "ret_period",
-                    ret_prd
+                    this.ret_period
                 },
                 {
                     "state_cd",
@@ -102,7 +90,7 @@ namespace GSTN.API
 
         }
         //API call  for getting all B2C Large invoices with amendments for a return period.
-        public GSTNResult<List<B2clAOutward>> GetB2CLA(string gstin, string ret_prd, string state_cd)
+        public GSTNResult<List<B2clAOutward>> GetB2CLA(string state_cd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -115,7 +103,7 @@ namespace GSTN.API
                 },
                 {
                     "ret_period",
-                    ret_prd
+                   this.ret_period
                 },
                 {
                     "state_cd",
@@ -129,7 +117,7 @@ namespace GSTN.API
 
         }
         //API call for getting all B2C HSN data for a return period.
-        public GSTNResult<List<B2csOutward>> GetB2Cs(string gstin, string ret_prd, string state_cd)
+        public GSTNResult<List<B2csOutward>> GetB2Cs(string state_cd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -142,7 +130,7 @@ namespace GSTN.API
                 },
                 {
                     "ret_period",
-                    ret_prd
+                   this.ret_period
                 },
                 {
                     "state_cd",
@@ -156,7 +144,7 @@ namespace GSTN.API
 
         }
         //API call for getting all B2CA HSN data for a return period.
-        public GSTNResult<List<B2CSAOutward>> GetB2CsA(string gstin, string ret_prd, string state_cd)
+        public GSTNResult<List<B2CSAOutward>> GetB2CsA(string state_cd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -169,7 +157,7 @@ namespace GSTN.API
                 },
                 {
                     "ret_period",
-                    ret_prd
+                  this.ret_period
                 },
                 {
                     "state_cd",
@@ -184,7 +172,7 @@ namespace GSTN.API
         }
 
         //API call  CDN for getting all Credit/Debit notes for a return period.
-        public GSTNResult<List<CdnOutward>> GetCDN(string gstin, string ret_prd, string action_required)
+        public GSTNResult<List<CdnOutward>> GetCDN(string action_required)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -197,7 +185,7 @@ namespace GSTN.API
                 },
                 {
                     "ret_period",
-                    ret_prd
+                   this.ret_period
                 },
                 {
                     "action_required",
@@ -212,7 +200,7 @@ namespace GSTN.API
         }
 
         //API call  CDNA for getting all amended Credit/Debit notes for a return period.
-        public GSTNResult<List<CDNAOutward>> GetCDNA(string gstin, string ret_prd, string action_required)
+        public GSTNResult<List<CDNAOutward>> GetCDNA(string action_required)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -225,7 +213,7 @@ namespace GSTN.API
                 },
                 {
                     "ret_period",
-                    ret_prd
+                   this.ret_period
                 },
                 {
                     "action_required",
@@ -240,7 +228,7 @@ namespace GSTN.API
         }
 
         //API call  NIL for getting  liabilities such as 'Nil Rated’, ‘Exempted’, and ‘Non GST’ supplies for a return period
-        public GSTNResult<NilRatedOutward> GetNilRated(string gstin, string ret_prd)
+        public GSTNResult<NilRatedOutward> GetNilRated(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -263,7 +251,7 @@ namespace GSTN.API
 
         }
         //API call  for getting invoices related to supplies exported  for a return period.
-        public GSTNResult<List<Exp>> GetExp(string gstin, string ret_prd)
+        public GSTNResult<List<Exp>> GetExp(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -287,7 +275,7 @@ namespace GSTN.API
         }
 
         //API call  for getting amended invoices related to supplies exported  for a return period.
-        public GSTNResult<List<ExpA>> GetExpA(string gstin, string ret_prd)
+        public GSTNResult<List<ExpA>> GetExpA(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -311,7 +299,7 @@ namespace GSTN.API
         }
 
         //API call  for getting advance tax details for a return period.
-        public GSTNResult<List<AtOutward>> GetAT(string gstin, string ret_prd)
+        public GSTNResult<List<AtOutward>> GetAT(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -335,7 +323,7 @@ namespace GSTN.API
         }
 
         //API call  for getting amended advance tax details for a return period.
-        public GSTNResult<List<AtAOutward>> GetATA(string gstin, string ret_prd)
+        public GSTNResult<List<AtAOutward>> GetATA(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -359,7 +347,7 @@ namespace GSTN.API
         }
 
         //API call  for getting tax paid details for a return period.
-        public GSTNResult<List<TxpOutward>> GetTXPD(string gstin, string ret_prd)
+        public GSTNResult<List<TxpOutward>> GetTXPD(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -383,7 +371,7 @@ namespace GSTN.API
         }
 
         //API call  for getting details of e-commerce supply for a return period
-        public GSTNResult<List<EComOutward>> GetECOM(string gstin, string ret_prd)
+        public GSTNResult<List<EComOutward>> GetECOM(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {
@@ -407,7 +395,7 @@ namespace GSTN.API
         }
 
         //This API Is To Get the table wise summary Of GSTR1 data
-        public GSTNResult<SummaryOutward> GetSummary(string gstin, string ret_prd)
+        public GSTNResult<SummaryOutward> GetSummary(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
                 {

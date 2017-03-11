@@ -25,26 +25,27 @@ namespace GSTN.API
 			get { return username; }
 			set { username = value; }
 		}
-		public GSTNAuthClient() : base("/taxpayerapi/v0.1/authenticate")
+		public GSTNAuthClient(string gstin) : base("/taxpayerapi/v0.2/authenticate",gstin)
 		{
 		}
 		protected internal override void BuildHeaders(HttpClient client)
 		{
 			client.DefaultRequestHeaders.Add("clientid", GSTNConstants.client_id);
 			client.DefaultRequestHeaders.Add("client-secret", GSTNConstants.client_secret);
-			client.DefaultRequestHeaders.Add("ip-usr", "12.8.91.80");
-			client.DefaultRequestHeaders.Add("state-cd", "11");
+			client.DefaultRequestHeaders.Add("ip-usr", GSTNConstants.publicip);
+			client.DefaultRequestHeaders.Add("state-cd", this.gstin.Substring(0,2));
 			client.DefaultRequestHeaders.Add("txn", "LAPN24235325555");
-		}
+
+        }
 
 
 		public GSTNResult<OTPResponseModel> RequestOTP(string username)
 		{
 			OTPRequestModel model = new OTPRequestModel {
 				action = "OTPREQUEST",
-				username = username
-			};
-			model.appkey = EncryptionUtils.EncryptTextWithPublicKey(GSTNConstants.appKey);
+				username = username,
+                app_key = EncryptionUtils.RsaEncrypt(GSTNConstants.GetAppKeyBytes())
+        };
 			var output = this.Post<OTPRequestModel, OTPResponseModel>(model);
 			return output;
 		}
@@ -54,15 +55,14 @@ namespace GSTN.API
 				action = "AUTHTOKEN",
 				username = username
 			};
-			model.appkey = EncryptionUtils.EncryptTextWithPublicKey(GSTNConstants.appKey);
-			model.otp = EncryptionUtils.Encrypt(otp, GSTNConstants.appKey);
+			model.app_key = EncryptionUtils.RsaEncrypt(GSTNConstants.GetAppKeyBytes());
+			model.otp = EncryptionUtils.AesEncrypt(otp, GSTNConstants.GetAppKeyBytes());
 			var output = this.Post<TokenRequestModel, TokenResponseModel>(model);
 
 			this.username = username;
 			token = output.Data;
 			this.AuthToken = token.auth_token;
-			var AppKeyBytes = Encoding.UTF8.GetBytes(GSTNConstants.appKey);
-			this.DecryptedKey = EncryptionUtils.Decrypt(token.sek, AppKeyBytes);
+			this.DecryptedKey = EncryptionUtils.AesDecrypt(token.sek, GSTNConstants.GetAppKeyBytes());
 			var Decipher = System.Text.Encoding.UTF8.GetString(DecryptedKey);
 
 			return output;

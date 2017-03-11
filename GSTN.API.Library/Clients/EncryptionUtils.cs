@@ -12,6 +12,13 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Org.BouncyCastle.Crypto.Encodings;
+using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.OpenSsl;
+using Org.BouncyCastle.Security;
+using System.Numerics;
+
 namespace GSTN.API
 {
 
@@ -22,7 +29,7 @@ namespace GSTN.API
 		public static X509Certificate2 getPublicKey()
 		{
 			RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
-			X509Certificate2 cert2 = new X509Certificate2("Resources\\GSTN_PublicKey.cer");
+			X509Certificate2 cert2 = new X509Certificate2("Resources\\GSTN_public.cer");
 			return cert2;
 		}
 
@@ -58,7 +65,7 @@ namespace GSTN.API
             }
 		}
 
-		public static string Encrypt(string plainText, byte[] keyBytes)
+		public static string AesEncrypt(string plainText, byte[] keyBytes)
 		{
 			byte[] dataToEncrypt = UTF8Encoding.UTF8.GetBytes(plainText);
 
@@ -77,16 +84,16 @@ namespace GSTN.API
 			return Convert.ToBase64String(cipher, 0, cipher.Length);
 		}
 
-		public static string Encrypt(string plainText, string key)
+		public static string AesEncrypt(string plainText, string key)
 		{
 			byte[] data = UTF8Encoding.UTF8.GetBytes(plainText);
 			byte[] keyBytes = Encoding.UTF8.GetBytes(key);
-			return EncryptionUtils.Encrypt(data, keyBytes);
+			return EncryptionUtils.AesEncrypt(data, keyBytes);
 
 		}
 
 
-		public static string Encrypt(byte[] data, byte[] keys)
+		public static string AesEncrypt(byte[] data, byte[] keys)
 		{
 			AesManaged tdes = new AesManaged();
 			tdes.KeySize = 256;
@@ -99,25 +106,25 @@ namespace GSTN.API
 			return Convert.ToBase64String(cipher, 0, cipher.Length);
 		}
 
-		public static byte[] Decrypt(string encryptedText, string key)
+		public static byte[] AesDecrypt(string encryptedText, string key)
 		{
 
 			byte[] dataToDecrypt = Convert.FromBase64String(encryptedText);
 			byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
-			return Decrypt(dataToDecrypt, keyBytes);
+			return AesDecrypt(dataToDecrypt, keyBytes);
 
 		}
 
-		public static byte[] Decrypt(string encryptedText, byte[] keys)
+		public static byte[] AesDecrypt(string encryptedText, byte[] keys)
 		{
 			byte[] dataToDecrypt = Convert.FromBase64String(encryptedText);
-			return Decrypt(dataToDecrypt, keys);
+			return AesDecrypt(dataToDecrypt, keys);
 		}
 
 
 
-		public static byte[] Decrypt(byte[] dataToDecrypt, byte[] keys)
+		public static byte[] AesDecrypt(byte[] dataToDecrypt, byte[] keys)
 		{
 
 			AesManaged tdes = new AesManaged();
@@ -137,10 +144,10 @@ namespace GSTN.API
 
 
 
-		public static string EncryptTextWithPublicKey(string input)
+		public static string RSAEncrypt(string input)
 		{
-			byte[] bytesToBeEncrypted = Encoding.UTF8.GetBytes(input);
-			return EncryptTextWithPublicKey(bytesToBeEncrypted);
+			byte[] bytesToBeEncrypted = Encoding.ASCII.GetBytes(input);
+			return RsaEncrypt(bytesToBeEncrypted);
 		}
 
 		private static readonly byte[] Salt = new byte[] {
@@ -153,7 +160,7 @@ namespace GSTN.API
 			70,
 			80
 		};
-		public static byte[] CreateKey()
+		public static byte[] CreateAesKey()
 		{
 
 			System.Security.Cryptography.AesCryptoServiceProvider crypto = new System.Security.Cryptography.AesCryptoServiceProvider();
@@ -163,10 +170,11 @@ namespace GSTN.API
 			return key;
 		}
 
-		public static string EncryptTextWithPublicKey(byte[] bytesToBeEncrypted)
+		public static string RsaEncrypt(byte[] bytesToBeEncrypted)
 		{
 			X509Certificate2 certificate = getPublicKey();
 			RSACryptoServiceProvider RSA = (RSACryptoServiceProvider)certificate.PublicKey.Key;
+            
 
 			byte[] bytesEncrypted = RSA.Encrypt(bytesToBeEncrypted, false);
 
@@ -211,6 +219,38 @@ namespace GSTN.API
             System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
             return encoding.GetBytes(str);
         }
+       
+
+        public static string RsaEncryptBC(byte[] bytesToEncrypt)
+        {
+
+            var encryptEngine = new Pkcs1Encoding(new RsaEngine());
+            string certificateLocation = "Resources\\GSTN_G2B_SANDBOX_UAT_public.pem";
+            string publicKey = File.ReadAllText(certificateLocation).Replace("RSA PUBLIC","PUBLIC");
+
+
+            using (var txtreader = new StringReader(publicKey))
+            {
+                var keyParameter = (AsymmetricKeyParameter)new PemReader(txtreader).ReadObject();
+                
+                encryptEngine.Init(true, keyParameter);
+            }
+
+            var encrypted = Convert.ToBase64String(encryptEngine.ProcessBlock(bytesToEncrypt, 0, bytesToEncrypt.Length));
+            return encrypted;
+
+        }
+
+        public static byte[] CreateAesKeyBC()
+        {
+            SecureRandom random = new SecureRandom();
+            byte[] keyBytes = new byte[32]; //32 Bytes = 256 Bits
+            random.NextBytes(keyBytes);
+
+            var key = ParameterUtilities.CreateKeyParameter("AES", keyBytes);
+            return key.GetKey();
+        }
+
     }
 
 }

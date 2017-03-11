@@ -18,11 +18,13 @@ public abstract class GSTNApiClientBase : IDisposable
 {
     protected internal string path;
     protected internal string url2;
+    protected internal string gstin;
 
     TimeSpan timeout = TimeSpan.FromSeconds(100);
-    public GSTNApiClientBase(string path)
+    public GSTNApiClientBase(string path, string gstin)
     {
         this.path = path;
+        this.gstin = gstin;
         url2 = GSTNConstants.base_url + path;
     }
     public TimeSpan RequestTimeout

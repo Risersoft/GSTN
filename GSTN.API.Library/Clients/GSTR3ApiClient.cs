@@ -16,12 +16,12 @@ namespace GSTN.API
 	public class GSTR3ApiClient : GSTNReturnsClient
 	{
 
-		public GSTR3ApiClient(IGSTNAuthProvider provider) : base(provider, "/taxpayerapi/v0.1/returns/gstr3")
+		public GSTR3ApiClient(IGSTNAuthProvider provider, string gstin, string ret_period) : base(provider, "/taxpayerapi/v0.2/returns/gstr3", gstin,ret_period)
 		{
 		}
 
 		//API call for generating GSTR3 returns
-		public GSTNResult<GenerateResponseInfo> Generate(string gstin, string ret_prd)
+		public GSTNResult<GenerateResponseInfo> Generate(string ret_prd)
 		{
 			GenerateRequestInfo data = new GenerateRequestInfo {
 				gstin = gstin,
@@ -35,7 +35,7 @@ namespace GSTN.API
 			return model2;
 		}
 		//API call for getting all GSTR3 details
-		public GSTNResult<GSTR3Total> GetDetails(string gstin, string ret_prd)
+		public GSTNResult<GSTR3Total> GetDetails(string ret_prd)
 		{
 			this.PrepareQueryString(new Dictionary<string, string> {
 				{

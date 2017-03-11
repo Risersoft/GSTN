@@ -37,6 +37,7 @@
     <Reference Include="eSignASPLib">
       <HintPath>..\GSTN.API.Library\Resources\eSignASPLib.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

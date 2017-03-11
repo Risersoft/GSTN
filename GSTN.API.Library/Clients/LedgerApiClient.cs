@@ -14,7 +14,7 @@ namespace GSTN.API
     {
 
         //action_required=“Y|N“
-        public LedgerApiClient(IGSTNAuthProvider provider) : base(provider, "/taxpayerapi/v0.1/returns/ledgers")
+        public LedgerApiClient(IGSTNAuthProvider provider, string gstin) : base(provider, "/taxpayerapi/v0.2/returns/ledgers",gstin,"")
         {
         }
 

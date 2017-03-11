@@ -9,7 +9,7 @@ namespace GSTN.API.Auth
     public class OTPRequestModel
     {
         public string action { get; set; }
-        public string appkey { get; set; }
+        public string app_key { get; set; }
         public string username { get; set; }
     }
     public class TokenRequestModel:OTPRequestModel

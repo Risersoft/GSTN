@@ -1,11 +1,13 @@
 ﻿using eSignASPLib;
 using eSignASPLib.DTO;
 using GSTN.API;
+using Microsoft.VisualBasic;
 using Org.BouncyCastle.Bcpg.OpenPgp.Examples;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,8 +18,54 @@ namespace GSTN.API.Console
         static eSign eSignObj;
         static void Main(string[] args)
         {
-            string gstin = "05BDIPA7164F1ZT";
-            string fp = "012017";
+            string gstin = "", fp = "",filename="";
+
+            if ((args != null) && (System.IO.File.Exists(args[0])))
+            {
+                filename = args[0];
+            } else
+            {
+                System.Console.Write("Enter input filename [Press Enter for None]:");
+                filename = System.Console.ReadLine();
+            }
+
+
+            if (!String.IsNullOrEmpty(filename) && (System.IO.File.Exists(filename)))
+            {
+                var fileContents = File.ReadAllText(filename);
+                string[] arr = Strings.Split(fileContents,Constants.vbCrLf);
+                GSTNConstants.client_id = arr[0];
+                GSTNConstants.client_secret = arr[1];
+                GSTNConstants.userid = arr[2];
+                gstin = arr[3];
+                fp = arr[4];
+
+            } else { 
+            System.Console.Write("Enter ClientId:");
+            GSTNConstants.client_id = System.Console.ReadLine();
+
+            System.Console.Write("Enter Client Secret:");
+            GSTNConstants.client_secret = System.Console.ReadLine();
+
+            System.Console.Write("Enter UserID:");
+            GSTNConstants.userid = System.Console.ReadLine();
+
+            System.Console.Write("Enter GSTIN:");
+            gstin = System.Console.ReadLine();
+
+            System.Console.Write("Enter FP:");
+            fp = System.Console.ReadLine();
+            }
+
+            try
+            {
+                GSTNConstants.publicip = new WebClient().DownloadString("http://ipinfo.io/ip").Trim();
+            }
+            catch
+            {
+                GSTNConstants.publicip = "11.10.1.1";
+            }
+
 
             System.Console.WriteLine("1=GSTR1, 2=GSTR2, 3=GSTR3, 4=Ledger, 5=File with eSign, 6=CSV conversion, 7=PGP, 8=File With DSC");
             string selection = System.Console.ReadLine();
@@ -41,7 +89,7 @@ namespace GSTN.API.Console
                     string path = System.Console.ReadLine();
                     System.Console.Write("Enter your Aadhar Num:");
                     string aadhaarnum = System.Console.ReadLine();
-                    string transactionid = GetOtp(path, aadhaarnum);
+                    string transactionid = GetUIDAIOtp(path, aadhaarnum);
                     System.Console.Write("Enter OTP:");
                     string otp = System.Console.ReadLine();
                     FileGSTR1WithESign(gstin, fp, aadhaarnum, transactionid, otp);
@@ -84,7 +132,7 @@ namespace GSTN.API.Console
 
 
         }
-        private static string GetOtp(string path, string aadhaarnum)
+        private static string GetUIDAIOtp(string path, string aadhaarnum)
         {
             eSignObj = new eSign(path);    //Get your own license file from e-Mudhra
             Settings.PfxPath = "resources\\Docsigntest.pfx";
@@ -97,12 +145,9 @@ namespace GSTN.API.Console
         }
         private static void FileGSTR1WithESign(string gstin, string fp,string aadhaarnum, string transactionId, string Otp)
         {
-            GSTNAuthClient client = new GSTNAuthClient();
-            var result = client.RequestOTP(GSTNConstants.testUser);
-            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
-
-            GSTR1ApiClient client2 = new GSTR1ApiClient(client);
-            var model2 = client2.GetSummary(gstin, fp).Data;
+            GSTNAuthClient client = GetAuth(gstin);
+            GSTR1ApiClient client2 = new GSTR1ApiClient(client,gstin,fp);
+            var model2 = client2.GetSummary( fp).Data;
             
             //https://groups.google.com/forum/#!searchin/gst-suvidha-provider-gsp-discussion-group/authorized|sort:relevance/gst-suvidha-provider-gsp-discussion-group/9-_Mk7LatDs/eQ6_1kHTBAAJ
             //https://groups.google.com/forum/#!searchin/gst-suvidha-provider-gsp-discussion-group/authorized|sort:relevance/gst-suvidha-provider-gsp-discussion-group/acd-F7XPYz4/7z83KM4IBgAJ
@@ -124,12 +169,9 @@ namespace GSTN.API.Console
         }
         private static void FileGSTR1WithDSC(string gstin, string fp, string pan)
         {
-            GSTNAuthClient client = new GSTNAuthClient();
-            var result = client.RequestOTP(GSTNConstants.testUser);
-            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
-
-            GSTR1ApiClient client2 = new GSTR1ApiClient(client);
-            var model2 = client2.GetSummary(gstin, fp).Data;
+            GSTNAuthClient client = GetAuth(gstin);
+            GSTR1ApiClient client2 = new GSTR1ApiClient(client,gstin,fp);
+            var model2 = client2.GetSummary( fp).Data;
 
             var json2 = Convert.ToBase64String(Encoding.UTF8.GetBytes(client2.LastJson));
             var json3 = EncryptionUtils.sha256_hash(json2);
@@ -141,65 +183,64 @@ namespace GSTN.API.Console
 
         }
 
+        private static GSTNAuthClient GetAuth(string gstin)
+        {
+
+            GSTNAuthClient client = new GSTNAuthClient(gstin);
+            var result = client.RequestOTP(GSTNConstants.userid);
+
+            System.Console.Write("Enter OTP:");
+            string otp = System.Console.ReadLine();
+
+            var result2 = client.RequestToken(GSTNConstants.userid, otp);
+            return client;
+        }
+
         private static void TestGSTR1(string gstin,string fp)
         {
-            GSTNAuthClient client = new GSTNAuthClient();
-            var result = client.RequestOTP(GSTNConstants.testUser);
-            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
+            GSTNAuthClient client = GetAuth(gstin);
 
             GSTR1.GSTR1Total model = new GSTR1.GSTR1Total();
-            GSTR1ApiClient client2 = new GSTR1ApiClient(client);
-            model.b2b = client2.GetB2B(gstin, fp, "Y").Data;
-            model.b2cl = client2.GetB2CL(gstin, fp, "01").Data;
+            GSTR1ApiClient client2 = new GSTR1ApiClient(client,gstin,fp);
+            model.b2b = client2.GetB2B( "").Data;
+            model.b2cl = client2.GetB2CL(  "01").Data;
             var result3 = client2.Save(model);
 
         }
         private static void TestGSTR2(string gstin, string fp)
         {
-            GSTNAuthClient client = new GSTNAuthClient();
-            var result = client.RequestOTP(GSTNConstants.testUser);
-            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
-
+            GSTNAuthClient client = GetAuth(gstin);
             GSTR2.GSTR2Total model = new GSTR2.GSTR2Total();
-            GSTR2ApiClient client2 = new GSTR2ApiClient(client);
-            model.b2b = client2.GetB2B(gstin, fp, "Y").Data;
-            model.imp_g = client2.GetImpG(gstin, fp).Data;
+            GSTR2ApiClient client2 = new GSTR2ApiClient(client,gstin,fp);
+            model.b2b = client2.GetB2B( "Y").Data;
+            model.imp_g = client2.GetImpG( fp).Data;
             var result3 = client2.Save(model);
 
-            var model2 = client2.GetSummary(gstin, fp).Data;
+            var model2 = client2.GetSummary( fp).Data;
         }
         private static void TestGSTR3(string gstin, string fp)
         {
-            GSTNAuthClient client = new GSTNAuthClient();
-            var result = client.RequestOTP(GSTNConstants.testUser);
-            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
-
+            GSTNAuthClient client = GetAuth(gstin);
             GSTR3.GSTR3Total model = new GSTR3.GSTR3Total();
-            GSTR3ApiClient client2 = new GSTR3ApiClient(client);
-            var info = client2.Generate(gstin, fp).Data;
-            model = client2.GetDetails(gstin, fp).Data;
+            GSTR3ApiClient client2 = new GSTR3ApiClient(client,gstin,fp);
+            var info = client2.Generate( fp).Data;
+            model = client2.GetDetails( fp).Data;
             GSTR3.GSTR3SaveModel model2 = new GSTR3.GSTR3SaveModel();
             model2.rf_clm = model.rf_clm;
             var result3 = client2.Save(model2);
         }
         private static void TestLedger(string gstin, string fr_dt,string to_dt)
         {
-            GSTNAuthClient client = new GSTNAuthClient();
-            var result = client.RequestOTP(GSTNConstants.testUser);
-            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
-
-            LedgerApiClient client2 = new LedgerApiClient(client);
+            GSTNAuthClient client = GetAuth(gstin);
+            LedgerApiClient client2 = new LedgerApiClient(client,gstin);
             var info = client2.GetCashDtl(gstin, fr_dt,to_dt).Data;
         }
         private static string TestCSV(string gstin, string fp)
         {
-            GSTNAuthClient client = new GSTNAuthClient();
-            var result = client.RequestOTP(GSTNConstants.testUser);
-            var result2 = client.RequestToken(GSTNConstants.testUser, GSTNConstants.otp);
-
+            GSTNAuthClient client = GetAuth(gstin);
             GSTR1.GSTR1Total model = new GSTR1.GSTR1Total();
-            GSTR1ApiClient client2 = new GSTR1ApiClient(client);
-            model.b2b = client2.GetB2B(gstin, fp, "Y").Data;
+            GSTR1ApiClient client2 = new GSTR1ApiClient(client,gstin,fp);
+            model.b2b = client2.GetB2B( "Y").Data;
 
             var client3 = new MxApiClient("http://www.maximprise.com/api/gst");
             string str1 = client3.Json2CSV(client2.LastJson, "gstr1", "b2b").Data;
