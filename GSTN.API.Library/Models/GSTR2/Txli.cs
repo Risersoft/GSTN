@@ -42,32 +42,43 @@ namespace GSTN.API.GSTR2
         [Required]
         [Display(Name = "SGST Amount")]
         public double samt { get; set; }
+
+        [Required]
+        [Display(Name = "Cess Rate as per invoice")]
+        public double csrt { get; set; }
+
+        [Required]
+        [Display(Name = "Cess Amount as per invoice")]
+        public double csamt { get; set; }
     }
 
     public class Txli
     {
+        [Required]
+        [Display(Name = "Counter party")]
+        [MaxLength(30)]
+        [RegularExpression("^[a-zA-Z0-9]+$")]
+        public string cpty { get; set; }
 
         [Required]
-        [Display(Name = "GSTIN of unregistered supplier")]
-        public string rtin { get; set; }
+        [Display(Name = "Registration Type")]
+        public string reg_type { get; set; }
 
         [Required]
-        [Display(Name = "Name of Unregistered supplier")]
-        public string rname { get; set; }
+        [Display(Name = "Placeof supply State Code")]
+        [MaxLength(2)]
+        public int state_cd { get; set; }
 
         [Required]
-        [Display(Name = "State Code")]
-        public int st_cd { get; set; }
-
-        [Required]
-        [Display(Name = "Document No.")]
+        [Display(Name = "Supplier Document Number")]
         public string dnum { get; set; }
 
         [Required]
-        [Display(Name = "Document Date")]
+        [Display(Name = "Supplier Document Date")]
         public string dt { get; set; }
 
         [Required]
+        [Display(Name = "Item Details")]
         public List<TxliItm> itms { get; set; }
 
         [Required]

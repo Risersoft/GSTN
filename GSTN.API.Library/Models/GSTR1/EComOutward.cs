@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GSTN.API.GSTR1
 {
-    public class EComItm:Itm
+    public class EComItm : B2Bitem
     {
 
         [Required]
@@ -42,7 +42,7 @@ namespace GSTN.API.GSTR1
         public string ctin { get; set; }
 
         [Required]
-        [Display(Name = "itms")]
+        [Display(Name = "Item Details")]
         public List<EComItm> itms { get; set; }
 
 
@@ -55,11 +55,13 @@ namespace GSTN.API.GSTR1
     {
 
         [Required]
+        [Display(Name = "Type of invoices- Inter-state/Intra-State")]
         public string ecom_ty { get; set; }
 
         [Required]
+        [Display(Name = "List of ecom invoices")]
         public List<EComInv> eInvoices { get; set; }
     }
-    
+
 
 }

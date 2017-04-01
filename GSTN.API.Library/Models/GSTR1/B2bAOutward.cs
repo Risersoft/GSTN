@@ -6,16 +6,19 @@ using System.ComponentModel.DataAnnotations;
 namespace GSTN.API.GSTR1
 {
 
-    public class B2BAInv:B2BInv
+    public class B2BAInv : B2BInv
     {
 
         [Required]
         [Display(Name = "Original invoice number")]
-        public string onum { get; set; }
+        [MaxLength(50)]
+        [RegularExpression("^[a-zA-Z0-9]+$")]
+        public string oinum { get; set; }
 
         [Required]
         [Display(Name = "Original invoice date")]
-        public string odt { get; set; }
+        [RegularExpression("^((0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]((19|20)\\d\\d))*$")]
+        public string oidt { get; set; }
     }
 
     public class B2bAOutward
@@ -27,8 +30,14 @@ namespace GSTN.API.GSTR1
         [MinLength(15)]
         [RegularExpression("^[a-zA-Z0-9]+$")]
         public string ctin { get; set; }
+
         [Required]
+        [Display(Name = "GSTR2 filing status of counter party")]
+        [RegularExpression("^[a-zA-Z]+$")]
+        public string cfs { get; set; }
+
+        [Required]
+        [Display(Name = "Invoice Details")]
         public List<B2BAInv> inv { get; set; }
     }
-
 }

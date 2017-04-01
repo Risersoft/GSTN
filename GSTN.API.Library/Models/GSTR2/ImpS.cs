@@ -10,13 +10,13 @@ namespace GSTN.API.GSTR2
 
         [Required]
         [Display(Name = "Serial no")]
-        public int Num { get; set; }
+        public int num { get; set; }
 
         [Required]
-        [Display(Name = "SAC of Goods as per Invoice line items")]
+        [Display(Name = "SAC code")]
         [MaxLength(10)]
         [RegularExpression("^[a-zA-Z0-9]+$")]
-        public string hsn_sc { get; set; }
+        public string sac { get; set; }
 
         [Required]
         [Display(Name = "Taxable value of Goods/Service as per invoice")]
@@ -31,16 +31,31 @@ namespace GSTN.API.GSTR2
         public double iamt { get; set; }
 
         [Required]
+        [Display(Name = "CESS rate")]
+        public double csrt { get; set; }
+        [Required]
+        [Display(Name = "CESS amount")]
+        public double csamt { get; set; }
+
+        [Required]
         [Display(Name = "Eligibility of Total Tax available as ITC")]
         public string elg { get; set; }
 
         [Required]
         [Display(Name = "Total ITC admissible")]
-        public double tia { get; set; }
+        public int tx_i { get; set; }
 
         [Required]
         [Display(Name = "ITC admissible this month")]
-        public double iam { get; set; }
+        public double tc_i { get; set; }
+
+        [Required]
+        [Display(Name = "Total CESS available as ITC ")]
+        public double tx_cs { get; set; }
+
+        [Required]
+        [Display(Name = "ITC available as CESS this month")]
+        public double tc_cs { get; set; }
     }
 
     public class ImpS
@@ -50,19 +65,19 @@ namespace GSTN.API.GSTR2
         [Display(Name = "Invoice number")]
         [MaxLength(10)]
         [RegularExpression("^[a-zA-Z0-9]+$")]
-        public string i_num { get; set; }
+        public string inum { get; set; }
 
         [Required]
         [Display(Name = "Invoice date")]
         [RegularExpression("^((0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]((19|20)\\d\\d))*$")]
-        public string i_dt { get; set; }
+        public string idt { get; set; }
 
         [Required]
         [Display(Name = "Invoice Value")]
-        public double i_val { get; set; }
+        public double ival { get; set; }
 
         [Required]
-        [Display(Name = "itms")]
+        [Display(Name = "Item Details")]
         public List<ImpSItm> itms { get; set; }
 
 

@@ -27,7 +27,7 @@ namespace GSTN.API.GSTR2
 
         [Required]
         [Display(Name = "ISD Credit (IGST)")]
-        public double ig_crr { get; set; }
+        public int ig_crr { get; set; }
 
         [Required]
         [Display(Name = "ISD Credit (CGST)")]
@@ -43,6 +43,6 @@ namespace GSTN.API.GSTR2
         public string chksum { get; set; }
     }
 
-  
+
 
 }

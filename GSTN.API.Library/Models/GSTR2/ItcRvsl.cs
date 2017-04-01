@@ -48,5 +48,5 @@ namespace GSTN.API.GSTR2
         public string chksum { get; set; }
     }
 
-  
+
 }

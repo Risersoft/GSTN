@@ -9,7 +9,7 @@ namespace GSTN.API.GSTR1
     {
 
         [Required]
-        [Display(Name = "CTIN of the taxpayer")]
+        [Display(Name = "Supplier TIN for B2B & CDN/ISD TIN for ISD/deductor TIN for TDS/ Ecommerce Portal TIN for TCS/")]
         [MaxLength(15)]
         [MinLength(15)]
         [RegularExpression("^[a-zA-Z0-9]+$")]
@@ -17,15 +17,25 @@ namespace GSTN.API.GSTR1
 
         [Required]
         [Display(Name = "Invoice Check sum value")]
+        [MaxLength(15)]
         public string checksum { get; set; }
 
         [Required]
-        [Display(Name = "total tax amount")]
-        public double ttl_inv { get; set; }
+        [Display(Name = "Total Record Count")]
+        public int ttl_rec { get; set; }
 
         [Required]
-        [Display(Name = "total tax amount")]
+        [Display(Name = "Total records value")]
+        public double ttl_val { get; set; }
+
+        [Required]
+        [Display(Name = "Total Cess")]
+        public double ttl_cess { get; set; }
+
+        [Required]
+        [Display(Name = "Total taxable value of records")]
         public double ttl_tax { get; set; }
+
 
         [Required]
         [Display(Name = "total IGST amount")]
@@ -45,18 +55,28 @@ namespace GSTN.API.GSTR1
 
         [Required]
         [Display(Name = "Return Section")]
+        [MaxLength(5)]
         public string sec_nm { get; set; }
 
         [Required]
         [Display(Name = "Invoice Check sum value")]
+        [MaxLength(15)]
         public string checksum { get; set; }
 
         [Required]
-        [Display(Name = "total tax amount")]
-        public double ttl_inv { get; set; }
+        [Display(Name = "Total Record Count")]
+        public int ttl_rec { get; set; }
 
         [Required]
-        [Display(Name = "total tax amount")]
+        [Display(Name = "Total records value")]
+        public double ttl_val { get; set; }
+
+        [Required]
+        [Display(Name = "Total Cess")]
+        public double ttl_cess { get; set; }
+
+        [Required]
+        [Display(Name = "Total taxable value of records")]
         public double ttl_tax { get; set; }
 
         [Required]
@@ -73,10 +93,10 @@ namespace GSTN.API.GSTR1
 
 
         [Display(Name = "cpty_sum")]
-        public List<CptySum> counter_party_summary { get; set; }
+        public List<CptySum> cpty_sum { get; set; }
     }
 
-    public class GSTR1SummaryInfo
+    public class SummaryOutward
     {
 
         [Required]
@@ -88,38 +108,15 @@ namespace GSTN.API.GSTR1
 
         [Required]
         [Display(Name = "Return Period")]
-        public string RetPd { get; set; }
+        [RegularExpression("^((0[1-9]|1[012])((19|20)\\d\\d))*$")]
+        public string ret_pd { get; set; }
 
         [Required]
         [Display(Name = "Invoice Check sum value")]
+        [MaxLength(15)]
         public string checksum { get; set; }
 
-        [Required]
-        [Display(Name = "total tax amount")]
-        public double ttl_inv { get; set; }
-
-        [Required]
-        [Display(Name = "total tax amount")]
-        public double ttl_tax { get; set; }
-
-        [Required]
-        [Display(Name = "total IGST amount")]
-        public double ttl_igst { get; set; }
-
-        [Required]
-        [Display(Name = "total SGST amount")]
-        public double ttl_sgst { get; set; }
-
-        [Required]
-        [Display(Name = "total CGST amount")]
-        public double ttl_cgst { get; set; }
-
-
-        [Display(Name = "sec_sum")]
-        public List<SecSum> section_summary { get; set; }
-    }
-    public class SummaryOutward
-    {
-        public List<GSTR1SummaryInfo> GSTR1Summary { get; set; }
+        [Display(Name = "section_summary")]
+        public List<SecSum> sec_sum { get; set; }
     }
 }

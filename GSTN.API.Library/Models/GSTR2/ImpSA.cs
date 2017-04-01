@@ -12,12 +12,12 @@ namespace GSTN.API.GSTR2
         [Required]
         [Display(Name = "Original Invoice Number")]
         [MaxLength(10)]
-        public string oi_num { get; set; }
+        public string oinum { get; set; }
 
         [Required]
         [Display(Name = "Original Invoice Date")]
         [RegularExpression("^((0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]((19|20)\\d\\d))*$")]
-        public string oi_dt { get; set; }
+        public string oidt { get; set; }
 
 
 
@@ -29,16 +29,16 @@ namespace GSTN.API.GSTR2
         [Display(Name = "Invoice number")]
         [MaxLength(10)]
         [RegularExpression("^[a-zA-Z0-9]+$")]
-        public string i_num { get; set; }
+        public string inum { get; set; }
 
         [Required]
         [Display(Name = "Invoice date")]
         [RegularExpression("^((0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]((19|20)\\d\\d))*$")]
-        public string i_dt { get; set; }
+        public string idt { get; set; }
 
         [Required]
         [Display(Name = "Invoice Value")]
-        public double i_val { get; set; }
+        public double ival { get; set; }
 
         [Required]
         [Display(Name = "itms")]

@@ -14,6 +14,8 @@ namespace GSTN.API.GSTR1
 
         [Required]
         [Display(Name = "HSN or SAC of Goods or Services as per Invoice line items")]
+        [MaxLength(10)]
+        [RegularExpression("^[a-zA-Z0-9]+$")]
         public string hsn_sc { get; set; }
 
         [Required]
@@ -43,9 +45,17 @@ namespace GSTN.API.GSTR1
         [Required]
         [Display(Name = "SGST Amount as per invoice")]
         public double samt { get; set; }
+
+        [Required]
+        [Display(Name = "cess Rate as per invoice")]
+        public double csrt { get; set; }
+
+        [Required]
+        [Display(Name = "cess Amount as per invoice")]
+        public double csamt { get; set; }
     }
 
-    public class Itm
+    public class B2Bitem
     {
         [Required]
         [Display(Name = "Serial no")]
@@ -53,6 +63,12 @@ namespace GSTN.API.GSTR1
         [Required]
         [Display(Name = "Item Details")]
         public ItmDet itm_det { get; set; }
+
+        //in excel file 'status' prameter name exists
+
+        //[Required]
+        //[Display(Name = "Status of invoice")]
+        //public int status { get; set; }
     }
 
     public class B2BInv
@@ -80,12 +96,27 @@ namespace GSTN.API.GSTR1
         [Display(Name = "Reverse Charge")]
         public string rchrg { get; set; }
 
-       
         [Required]
         [Display(Name = "Provisional assessment")]
-        public string pro_ass { get; set; }
+        public string prs { get; set; }
+
+
+        [Display(Name = "EcomOperator")]
+        [MaxLength(15)]
+        [RegularExpression("^[a-zA-Z0-9]+$")]
+        public string etin { get; set; }
+
         [Required]
-        public List<Itm> itms { get; set; }
+        [Display(Name = "Uploaded by")]
+        public string updby { get; set; }
+
+        [Required]
+        [Display(Name = "Invoice Status")]
+        public string flag { get; set; }
+
+        [Required]
+        [Display(Name = "Items")]
+        public List<B2Bitem> itms { get; set; }
 
 
         [Display(Name = "Checksum Value")]
@@ -97,13 +128,20 @@ namespace GSTN.API.GSTR1
     {
 
         [Required]
-        [Display(Name = "GSTIN/UID of the Receiver taxpayer/UN,Govt Bodies")]
+        [Display(Name = "Counter party GSTIN")]
         [MaxLength(15)]
         [MinLength(15)]
         [RegularExpression("^[a-zA-Z0-9]+$")]
         public string ctin { get; set; }
+
         [Required]
+        [Display(Name = "GSTR2 filing status of counter party")]
+        [RegularExpression("^[a-zA-Z]+$")]
+        public string cfs { get; set; }
+
+        [Required]
+        [Display(Name = "Invoice Details")]
         public List<B2BInv> inv { get; set; }
     }
-    
+
 }

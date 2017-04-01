@@ -41,11 +41,11 @@ namespace GSTN.API.GSTR2
 
         [Required]
         [Display(Name = "IGST Rate as per invoice")]
-        public double irt { get; set; }
+        public int irt { get; set; }
 
         [Required]
         [Display(Name = "IGST Amount as per invoice")]
-        public double iamt { get; set; }
+        public int iamt { get; set; }
 
         [Required]
         [Display(Name = "CGST Rate as per invoice")]
@@ -64,6 +64,14 @@ namespace GSTN.API.GSTR2
         public double samt { get; set; }
 
         [Required]
+        [Display(Name = "Cess Rate as per invoice")]
+        public double csrt { get; set; }
+
+        [Required]
+        [Display(Name = "Cess Amount as per invoice")]
+        public double csamt { get; set; }
+
+        [Required]
         [Display(Name = "Checksum Value")]
         [RegularExpression("^[a-zA-Z0-9]+$")]
         public string chksum { get; set; }
@@ -73,14 +81,14 @@ namespace GSTN.API.GSTR2
     {
 
         [Required]
-        [Display(Name = "GSTIN/UID of the Receiver taxpayer/UN,Govt Bodies")]
+        [Display(Name = "TIN of the deductor")]
         [MaxLength(15)]
         [MinLength(15)]
         [RegularExpression("^[a-zA-Z0-9]+$")]
         public string ctin { get; set; }
 
 
-        [Display(Name = "tds_invoices")]
+        [Display(Name = "TDS Invoces")]
         public List<TdsInvoice> tds_invoices { get; set; }
     }
 

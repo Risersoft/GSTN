@@ -10,16 +10,9 @@ namespace GSTN.API.GSTR1
     public class AtAOutward:AtOutward
     {
         [Required]
-        [Display(Name = "Original GSTIN/UID of the Receiver taxpayer/UN,Govt Bodies")]
-        [MaxLength(15)]
-        [MinLength(15)]
-        [RegularExpression("^[a-zA-Z0-9]+$")]
-        public string octin { get; set; }
-
-        [Required]
-        [Display(Name = "Original/Revised Name of Recipient")]
-        [RegularExpression("^[a-zA-Z0-9._\\s]+$")]
-        public string ocname { get; set; }
+        [Display(Name = "Original CounterParty Gstin or Name")]
+        [MaxLength(50)]
+        public string ocpty { get; set; }
 
         [Required]
         [Display(Name = "Original/Revised document number")]

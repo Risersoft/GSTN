@@ -56,6 +56,14 @@ namespace GSTN.API.GSTR2
         public double samt { get; set; }
 
         [Required]
+        [Display(Name = "CESS Rate as per invoice")]
+        public double csrt { get; set; }
+
+        [Required]
+        [Display(Name = "CESS Amount as per invoice")]
+        public double csamt { get; set; }
+
+        [Required]
         [Display(Name = "Invoice Check sum value")]
         [MaxLength(15)]
         public string chksum { get; set; }

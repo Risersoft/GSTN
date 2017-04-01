@@ -27,11 +27,11 @@ namespace GSTN.API.GSTR2
 
         [Required]
         [Display(Name = "Gross Turn Over")]
-        public double gt { get; set; }
+        public int gt { get; set; }
 
         [Required]
         [Display(Name = "Total Tax Liability")]
-        public double ttl { get; set; }
+        public int ttl { get; set; }
 
         public List<B2bInward> b2b { get; set; }
 
@@ -76,6 +76,6 @@ namespace GSTN.API.GSTR2
 
         public List<ItcRvsl> itc_rvsl { get; set; }
 
-        //        public List<Hsnsum> hsnsum { get; set; }
+    
     }
 }

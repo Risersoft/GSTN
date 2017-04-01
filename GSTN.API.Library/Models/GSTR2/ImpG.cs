@@ -29,6 +29,12 @@ namespace GSTN.API.GSTR2
         [Required]
         [Display(Name = "IGST Amount as per Bill of Entry")]
         public double iamt { get; set; }
+        [Required]
+        [Display(Name = "CESS rate")]
+        public double csrt { get; set; }
+        [Required]
+        [Display(Name = "CESS amount")]
+        public double csamt { get; set; }
 
         [Required]
         [Display(Name = "Eligibility of Total Tax available as ITC")]
@@ -41,6 +47,14 @@ namespace GSTN.API.GSTR2
         [Required]
         [Display(Name = "Total Input Tax Credit available for claim this month based on the bill of entry uploaded")]
         public double tc_i { get; set; }
+
+        [Required]
+        [Display(Name = "Total CESS available as ITC ")]
+        public double tx_cs { get; set; }
+
+        [Required]
+        [Display(Name = "ITC available as CESS this month")]
+        public double tc_cs { get; set; }
     }
 
     public class ImpG
@@ -49,7 +63,7 @@ namespace GSTN.API.GSTR2
         [Required]
         [Display(Name = "Bill of Entry Number")]
         [MaxLength(50)]
-        public string boe_num { get; set; }
+        public int boe_num { get; set; }
 
         [Required]
         [Display(Name = "Bill of Entry Date")]
@@ -57,11 +71,15 @@ namespace GSTN.API.GSTR2
         public string boe_dt { get; set; }
 
         [Required]
+        [Display(Name = "Port Code")]
+        public string port_code { get; set; }
+
+        [Required]
         [Display(Name = "Bill of Entry Value")]
         public double boe_val { get; set; }
 
         [Required]
-        [Display(Name = "itms")]
+        [Display(Name = "Bill Item Details")]
         public List<ImpGItm> itms { get; set; }
 
 

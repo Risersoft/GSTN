@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
-//class properties does not match with schema
 namespace GSTN.API.GSTR2
 {
     public class NilSupplyData
@@ -31,6 +30,16 @@ namespace GSTN.API.GSTR2
         [Required]
         [Display(Name = "Nil Rated Supply")]
         public double nilsply { get; set; }
+
+        [Display(Name = "Invoice Check sum value ")]
+        [MaxLength(15)]
+        [RegularExpression("^[a-zA-Z0-9]+$")]
+        public string chksum { get; set; }
+
+        [Display(Name = "Goods Type")]
+        [MaxLength(1)]
+        [RegularExpression("^[a-zA-Z0-9]+$")]
+        public string ty { get; set; }
     }
 
     public class NilRatedInward
@@ -44,8 +53,5 @@ namespace GSTN.API.GSTR2
         [Display(Name = "Nil Data")]
         public List<NilSupplyData> nil { get; set; }
 
-        [Display(Name = "Checksum Value")]
-        [RegularExpression("^[a-zA-Z0-9]+$")]
-        public string chksum { get; set; }
     }
 }

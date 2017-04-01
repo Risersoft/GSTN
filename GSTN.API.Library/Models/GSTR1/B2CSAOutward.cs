@@ -7,30 +7,30 @@ using System.Threading.Tasks;
 
 namespace GSTN.API.GSTR1
 {
-  public  class B2CSAOutward:B2csOutward
+    public class B2CSAOutward : B2csOutward
 
     {
-        [Display(Name = "Checksum Value")]
-        [RegularExpression("^[a-zA-Z0-9]+$")]
-        public string chksum { get; set; }
-
+        
         [Required]
-        [Display(Name = "Month")]
-        [RegularExpression("^[a-zA-z0-9]+$")]
+        [Display(Name = "Original Month")]
+        [RegularExpression("^((0[1-9]|1[012])((19|20)\\d\\d))*$")]
         public string omon { get; set; }
 
         [Required]
         [Display(Name = "Line Item Type i.e. Goods/Services")]
-        [RegularExpression("^[a-zA-z]+$")]
+        [MaxLength(1)]
+        [RegularExpression("^[G/S]")]
         public string oty { get; set; }
 
         [Required]
-        [Display(Name = "HSN/SAC Value")]
+        [Display(Name = "Original HSN/SAC Value")]
+        [MaxLength(10)]
         [RegularExpression("^[a-zA-Z0-9]+$")]
         public string ohsn_sc { get; set; }
 
         [Required]
         [Display(Name = "Supply State Code")]
+        [MaxLength(2)]
         public string osupst_cd { get; set; }
     }
 }

@@ -36,7 +36,6 @@ namespace GSTN.API.GSTR1
         public NilRatedOutward nil { get; set; }
         public List<Exp> exp { get; set; }
         public List<ExpA> expa { get; set; }
-//        public HsnSac hsnSac { get; set; }
         public List<CDNAOutward> cdna { get; set; }
         public List<AtOutward> at { get; set; }
         public List<AtAOutward> ata { get; set; }
