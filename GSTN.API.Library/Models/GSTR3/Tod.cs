@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace GSTN.API.GSTR3
 {
@@ -11,23 +10,24 @@ namespace GSTN.API.GSTR3
     {
 
         [Required]
-        [Display(Name = "Gross Turnover of the taxpayer in the previous FY")]
-        public double gt { get; set; }
+        [Display(Name = "Gross Turnover")]
+        public double gr_to { get; set; }
 
         [Required]
         [Display(Name = "Export Turnover")]
-        public double et { get; set; }
+        public double exp_to { get; set; }
+
 
         [Required]
         [Display(Name = "Nil rated and Exempted Domestic Turnover")]
-        public double nil_edt { get; set; }
+        public double nil_to { get; set; }
 
         [Required]
         [Display(Name = "Non GST Turnover")]
-        public double ngt { get; set; }
+        public double non_to { get; set; }
 
         [Required]
         [Display(Name = "Net Taxable Turnover")]
-        public double ntt { get; set; }
+        public double net_to { get; set; }
     }
 }
