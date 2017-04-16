@@ -6,14 +6,21 @@ using System.Threading.Tasks;
 
 namespace GSTN.API
 {
+    public class StatusInfo
+    {
+        public string status_cd { get; set; }
+        public string errorCd { get; set; }
+        public string error_msg { get; set; }
+        public string error_report { get; set; }
+    }
     public class PutInfo
     {
         public string trans_id { get; set; }
     }
     public class PostInfo
     {
-        public string stscd { get; set; }
-        public string db_no { get; set; }
+        public string reference_id { get; set; }
+        public string trans_id { get; set; }
     }
     public class GenerateRequestInfo
     {
