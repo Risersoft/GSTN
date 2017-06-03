@@ -150,25 +150,25 @@ namespace GSTN.API
         }
 
         //This API call is to utilize the remaining cash for paying the liability
-        public GSTNResult<PostInfo> UtilizeCash(UtilizeCashModel data)
+        public GSTNResult<SaveInfo> UtilizeCash(UtilizeCashModel data)
         {
             var model = this.Encrypt(data);
             model.action = "UTLCSH";
             var info = this.Post<UnsignedDataInfo, ResponseDataInfo>(model);
-            var output = this.Decrypt<PostInfo>(info.Data);
-            var model2 = this.BuildResult<PostInfo>(info, output);
+            var output = this.Decrypt<SaveInfo>(info.Data);
+            var model2 = this.BuildResult<SaveInfo>(info, output);
             return model2;
         }
 
 
         //This API call is to utilize ITC for paying the liability
-        public GSTNResult<PostInfo> UtilizeITC(UtilizeITCModel data)
+        public GSTNResult<SaveInfo> UtilizeITC(UtilizeITCModel data)
         {
             var model = this.Encrypt(data);
             model.action = "UTLITC";
             var info = this.Post<UnsignedDataInfo, ResponseDataInfo>(model);
-            var output = this.Decrypt<PostInfo>(info.Data);
-            var model2 = this.BuildResult<PostInfo>(info, output);
+            var output = this.Decrypt<SaveInfo>(info.Data);
+            var model2 = this.BuildResult<SaveInfo>(info, output);
             return model2;
         }
 

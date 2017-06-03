@@ -13,14 +13,10 @@ namespace GSTN.API
         public string error_msg { get; set; }
         public string error_report { get; set; }
     }
-    public class PutInfo
+    public class SaveInfo
     {
         public string trans_id { get; set; }
-    }
-    public class PostInfo
-    {
         public string reference_id { get; set; }
-        public string trans_id { get; set; }
     }
     public class GenerateRequestInfo
     {

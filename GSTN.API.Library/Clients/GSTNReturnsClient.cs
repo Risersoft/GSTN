@@ -36,7 +36,7 @@ namespace GSTN.API
             client.DefaultRequestHeaders.Add("state-cd", this.gstin.Substring(0, 2));
             client.DefaultRequestHeaders.Add("gstin", this.gstin);
             if (!string.IsNullOrEmpty(this.ret_period)) client.DefaultRequestHeaders.Add("ret_period", this.ret_period);
-            client.DefaultRequestHeaders.Add("txn", "LAPN24235325555");
+            client.DefaultRequestHeaders.Add("txn", System.Guid.NewGuid().ToString().Replace("-",""));
             client.DefaultRequestHeaders.Add("username", provider.Username);
             client.DefaultRequestHeaders.Add("auth-token", provider.AuthToken);
         }
@@ -60,7 +60,11 @@ namespace GSTN.API
             UnsignedDataInfo info = new UnsignedDataInfo();
             if (input != null)
             {
-            string finalJson = JsonConvert.SerializeObject(input);
+                string finalJson = JsonConvert.SerializeObject(input, Newtonsoft.Json.Formatting.Indented,
+                            new JsonSerializerSettings
+                            {
+                                NullValueHandling = NullValueHandling.Ignore
+                            });
             byte[] encodeJson = Encoding.UTF8.GetBytes(finalJson);
             string json = Convert.ToBase64String(encodeJson);
             byte[] jsonData = Encoding.UTF8.GetBytes(json);
@@ -97,7 +101,7 @@ namespace GSTN.API
             return model2;
 
         }
-         public GSTNResult<PostInfo> Submit(string ret_prd)
+         public GSTNResult<SaveInfo> Submit(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
             {"gstin",gstin},
@@ -110,8 +114,8 @@ namespace GSTN.API
                 ret_period=ret_prd
             };
             var info = this.Post<GenerateRequestInfo, ResponseDataInfo>(model);
-            var output = this.Decrypt<PostInfo>(info.Data);
-            var model2 = this.BuildResult<PostInfo>(info, output);
+            var output = this.Decrypt<SaveInfo>(info.Data);
+            var model2 = this.BuildResult<SaveInfo>(info, output);
             System.Console.WriteLine("Obtained Result:" + model2.Data.reference_id + System.Environment.NewLine);
             return model2;
 

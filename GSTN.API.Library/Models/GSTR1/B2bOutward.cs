@@ -22,37 +22,29 @@ namespace GSTN.API.GSTR1
         [Display(Name = "Taxable value of Goods or Service as per invoice")]
         public double txval { get; set; }
 
-        [Required]
         [Display(Name = "IGST Rate as per invoice")]
-        public double irt { get; set; }
+        public double? irt { get; set; }
 
-        [Required]
         [Display(Name = "IGST Amount as per invoice")]
-        public double iamt { get; set; }
+        public double? iamt { get; set; }
 
-        [Required]
         [Display(Name = "CGST Rate as per invoice")]
-        public double crt { get; set; }
+        public double? crt { get; set; }
 
-        [Required]
         [Display(Name = "CGST Amount as per invoice")]
-        public double camt { get; set; }
+        public double? camt { get; set; }
 
-        [Required]
         [Display(Name = "SGST Rate as per invoice")]
-        public double srt { get; set; }
+        public double? srt { get; set; }
 
-        [Required]
         [Display(Name = "SGST Amount as per invoice")]
-        public double samt { get; set; }
+        public double? samt { get; set; }
 
-        [Required]
         [Display(Name = "cess Rate as per invoice")]
-        public double csrt { get; set; }
+        public double? csrt { get; set; }
 
-        [Required]
         [Display(Name = "cess Amount as per invoice")]
-        public double csamt { get; set; }
+        public double? csamt { get; set; }
     }
 
     public class B2Bitem
