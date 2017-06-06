@@ -18,6 +18,9 @@ using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
 using System.Numerics;
+using Org.BouncyCastle.Crypto.Macs;
+using Org.BouncyCastle.Crypto.Digests;
+using Org.BouncyCastle.Crypto.Parameters;
 
 namespace GSTN.API
 {
@@ -47,11 +50,18 @@ namespace GSTN.API
 
 
 		}
-		public static string GenerateHMAC(string Base64Msg, byte[] EK)
+        public static string GenerateBase64HMAC(string msg, string key)
+        {
+            byte[] encodeMsg = Encoding.UTF8.GetBytes(msg);
+            string base64Msg = Convert.ToBase64String(encodeMsg);
+            byte[] EK = Encoding.UTF8.GetBytes(key);
+            return GenerateHMAC(base64Msg, EK);
+        }
+        public static string GenerateHMAC(string Base64Msg, byte[] EK)
 		{
             using (var HMACSHA256 = new HMACSHA256(EK))
             {
-                byte[] data = System.Text.Encoding.UTF8.GetBytes(Base64Msg);
+                byte[] data = UTF8Encoding.UTF8.GetBytes(Base64Msg);
                 byte[] hashmessage = HMACSHA256.ComputeHash(data);
                 return Convert.ToBase64String(hashmessage);
             }
@@ -75,7 +85,7 @@ namespace GSTN.API
 		public static string AesEncrypt(string plainText, string key)
 		{
 			byte[] data = UTF8Encoding.UTF8.GetBytes(plainText);
-			byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+			byte[] keyBytes = UTF8Encoding.UTF8.GetBytes(key);
 			return EncryptionUtils.AesEncrypt(data, keyBytes);
 
 		}
@@ -176,17 +186,14 @@ namespace GSTN.API
 
         public static string sha256_hash(string value)
         {
-            StringBuilder Sb = new StringBuilder();
 
             using (SHA256 hash = SHA256Managed.Create())
             {
                 Byte[] result = hash.ComputeHash(Encoding.UTF8.GetBytes(value));
 
-                foreach (Byte b in result)
-                    Sb.Append(b.ToString("x2"));
+                return Convert.ToBase64String(result);
             }
 
-            return Sb.ToString();
         }
 
         /// <summary>
@@ -242,7 +249,36 @@ namespace GSTN.API
             var key = ParameterUtilities.CreateKeyParameter("AES", keyBytes);
             return key.GetKey();
         }
+        public byte[] Hash(string text, string key)
+        {
+            var hmac = new HMac(new Sha256Digest());
+            hmac.Init(new KeyParameter(Encoding.UTF8.GetBytes(key)));
+            byte[] result = new byte[hmac.GetMacSize()];
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
 
+            hmac.BlockUpdate(bytes, 0, bytes.Length);
+            hmac.DoFinal(result, 0);
+
+            return result;
+        }
+        public static string GenerateBase64HMACBC(string msg, string key)
+        {
+            byte[] encodeMsg = Encoding.UTF8.GetBytes(msg);
+            string base64Msg = Convert.ToBase64String(encodeMsg);
+            byte[] EK = Encoding.UTF8.GetBytes(key);
+            return GenerateHMACBC(base64Msg, EK);
+        }
+        public static string GenerateHMACBC(string Base64Msg, byte[] EK)
+        {
+            var hmac = new HMac(new Sha256Digest());
+            hmac.Init(new KeyParameter(EK));
+            byte[] hashMessage = new byte[hmac.GetMacSize()];
+            byte[] bytes = Encoding.UTF8.GetBytes(Base64Msg);
+
+            hmac.BlockUpdate(bytes, 0, bytes.Length);
+            hmac.DoFinal(hashMessage, 0);
+            return Convert.ToBase64String(hashMessage);
+        }
     }
 
 }

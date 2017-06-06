@@ -23,25 +23,24 @@ namespace GSTN.API.GSTR1
         public double txval { get; set; }
 
         [Display(Name = "IGST Rate as per invoice")]
-        public double? irt { get; set; }
+        public int? irt { get; set; }
 
         [Display(Name = "IGST Amount as per invoice")]
         public double? iamt { get; set; }
-
         [Display(Name = "CGST Rate as per invoice")]
-        public double? crt { get; set; }
+        public int? crt { get; set; }
 
         [Display(Name = "CGST Amount as per invoice")]
         public double? camt { get; set; }
 
         [Display(Name = "SGST Rate as per invoice")]
-        public double? srt { get; set; }
+        public int? srt { get; set; }
 
         [Display(Name = "SGST Amount as per invoice")]
         public double? samt { get; set; }
 
         [Display(Name = "cess Rate as per invoice")]
-        public double? csrt { get; set; }
+        public int? csrt { get; set; }
 
         [Display(Name = "cess Amount as per invoice")]
         public double? csamt { get; set; }
@@ -76,6 +75,16 @@ namespace GSTN.API.GSTR1
         [RegularExpression("^((0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]((19|20)\\d\\d))*$")]
         public string idt { get; set; }
 
+
+        [Display(Name = "Order Number")]
+        [RegularExpression("^[a-zA-Z0-9]+$")]
+        public string od_num { get; set; }
+
+        [Display(Name = "Order Date")]
+        [RegularExpression("^((0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]((19|20)\\d\\d))*$")]
+        public string od_dt { get; set; }
+
+     
         [Required]
         [Display(Name = "Supplier Invoice Value")]
         public double val { get; set; }

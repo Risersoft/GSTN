@@ -65,11 +65,10 @@ namespace GSTN.API
                             {
                                 NullValueHandling = NullValueHandling.Ignore
                             });
-            byte[] encodeJson = Encoding.UTF8.GetBytes(finalJson);
-            string json = Convert.ToBase64String(encodeJson);
-            byte[] jsonData = Encoding.UTF8.GetBytes(json);
-            info.data = EncryptionUtils.AesEncrypt(jsonData, provider.DecryptedKey);
-            info.hMAC = EncryptionUtils.GenerateHMAC(json, provider.DecryptedKey);
+            byte[] encodeJson = UTF8Encoding.UTF8.GetBytes(finalJson);
+            string base64Payload = Convert.ToBase64String(encodeJson);
+            info.data = EncryptionUtils.AesEncrypt(base64Payload, provider.DecryptedKey);
+            info.hMAC = EncryptionUtils.GenerateHMAC(base64Payload, provider.DecryptedKey);
             }
             return info;
         }

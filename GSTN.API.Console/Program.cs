@@ -19,8 +19,8 @@ namespace GSTN.API.Console
         static eSign eSignObj;
         static void Main(string[] args)
         {
-            string gstin = "", fp = "", filename = "", ctin = "";
-
+            string gstin = "", fp = "", filename = "", ctin = "",etin="";
+       
             if ((args != null) && (System.IO.File.Exists(args[0])))
             {
                 filename = args[0];
@@ -42,6 +42,7 @@ namespace GSTN.API.Console
                 gstin = arr[3];
                 fp = arr[4];
                 ctin = arr[5];
+                etin = arr[6];
 
             }
             else
@@ -113,7 +114,7 @@ namespace GSTN.API.Console
                     FileGSTR1WithDSC(gstin, fp, pan);
                     break;
                 case "9":
-                    TestGSTR1Save(gstin, fp, ctin);
+                    TestGSTR1Save(gstin, fp, ctin,etin);
                     break;
                 case "10":
                     TestGSTR2Save(gstin, fp);
@@ -254,7 +255,7 @@ namespace GSTN.API.Console
             string str1 = client3.Json2CSV(client2.LastJson, "gstr1", "b2b").Data;
             return str1;
         }
-        private static void TestGSTR1Save(string gstin, string fp, string ctin)
+        private static void TestGSTR1Save(string gstin, string fp, string ctin, string etin )
         {
             GSTNAuthClient client = GetAuth(gstin);
             var filename = "sampledata\\b2bout.json";
@@ -262,8 +263,13 @@ namespace GSTN.API.Console
                 System.Console.Write("Enter CTIN:");
                 ctin = System.Console.ReadLine();
             }
+            if (String.IsNullOrEmpty(etin))
+            {
+                System.Console.Write("Enter ETIN:");
+                etin = System.Console.ReadLine();
+            }
 
-            var str1 = File.ReadAllText(filename).Replace("%ctin%", ctin);
+            var str1 = File.ReadAllText(filename).Replace("%ctin%", ctin).Replace("%etin%",etin);
             GSTR1.GSTR1Total model = JsonConvert.DeserializeObject<GSTR1.GSTR1Total>(str1);
             model.gstin = gstin;
             model.fp = fp;
