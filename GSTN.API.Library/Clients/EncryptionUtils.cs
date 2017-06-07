@@ -36,59 +36,24 @@ namespace GSTN.API
 			return cert2;
 		}
 
-		public static string HMAC_Encrypt(string message, string secret)
+		public static string GenerateHMAC(string message, string secret)
 		{
 			secret = secret ?? "";
-			var encoding = new System.Text.ASCIIEncoding();
-			byte[] keyByte = encoding.GetBytes(secret);
-			byte[] messageBytes = encoding.GetBytes(message);
-            using (var HMACSHA256 = new HMACSHA256(keyByte))
-            {
-                byte[] hashmessage = HMACSHA256.ComputeHash(messageBytes);
-                return Convert.ToBase64String(hashmessage);
-            }
+			byte[] keyByte = Encoding.UTF8.GetBytes(secret);
+            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            return GenerateHMAC(messageBytes, keyByte);
 
 
 		}
-        public static string GenerateBase64HMAC(string msg, string key)
+    
+        public static string GenerateHMAC(byte[] data, byte[] EK)
         {
-            byte[] encodeMsg = Encoding.UTF8.GetBytes(msg);
-            string base64Msg = Convert.ToBase64String(encodeMsg);
-            byte[] EK = Encoding.UTF8.GetBytes(key);
-            return GenerateHMAC(base64Msg, EK);
-        }
-        public static string GenerateHMAC(string Base64Msg, byte[] EK)
-		{
             using (var HMACSHA256 = new HMACSHA256(EK))
             {
-                byte[] data = UTF8Encoding.UTF8.GetBytes(Base64Msg);
                 byte[] hashmessage = HMACSHA256.ComputeHash(data);
                 return Convert.ToBase64String(hashmessage);
             }
-		}
-		public static string HMAC_Encrypt(byte[] EK)
-		{
-            using (var HMACSHA256 = new HMACSHA256())
-            {
-                byte[] hashmessage = HMACSHA256.ComputeHash(EK);
-                return Convert.ToBase64String(hashmessage);
-            }
-		}
-
-		public static string AesEncrypt(string plainText, byte[] keyBytes)
-		{
-			byte[] dataToEncrypt = UTF8Encoding.UTF8.GetBytes(plainText);
-            return EncryptionUtils.AesEncrypt(dataToEncrypt, keyBytes);
-		
-		}
-
-		public static string AesEncrypt(string plainText, string key)
-		{
-			byte[] data = UTF8Encoding.UTF8.GetBytes(plainText);
-			byte[] keyBytes = UTF8Encoding.UTF8.GetBytes(key);
-			return EncryptionUtils.AesEncrypt(data, keyBytes);
-
-		}
+        }
 
 
 		public static string AesEncrypt(byte[] dataToEncrypt, byte[] keyBytes)
@@ -108,15 +73,6 @@ namespace GSTN.API
             return Convert.ToBase64String(cipher, 0, cipher.Length);
         }
 
-		public static byte[] AesDecrypt(string encryptedText, string key)
-		{
-
-			byte[] dataToDecrypt = Convert.FromBase64String(encryptedText);
-			byte[] keyBytes = Encoding.UTF8.GetBytes(key);
-
-			return AesDecrypt(dataToDecrypt, keyBytes);
-
-		}
 
 		public static byte[] AesDecrypt(string encryptedText, byte[] keys)
 		{
@@ -126,13 +82,13 @@ namespace GSTN.API
 
 
 
-		public static byte[] AesDecrypt(byte[] dataToDecrypt, byte[] keys)
+		public static byte[] AesDecrypt(byte[] dataToDecrypt, byte[] keyBytes)
 		{
 
 			AesManaged tdes = new AesManaged();
 			tdes.KeySize = 256;
 			tdes.BlockSize = 128;
-			tdes.Key = keys;
+			tdes.Key = keyBytes;
 			tdes.Mode = CipherMode.ECB;
 			tdes.Padding = PaddingMode.PKCS7;
 
@@ -261,21 +217,13 @@ namespace GSTN.API
 
             return result;
         }
-        public static string GenerateBase64HMACBC(string msg, string key)
-        {
-            byte[] encodeMsg = Encoding.UTF8.GetBytes(msg);
-            string base64Msg = Convert.ToBase64String(encodeMsg);
-            byte[] EK = Encoding.UTF8.GetBytes(key);
-            return GenerateHMACBC(base64Msg, EK);
-        }
-        public static string GenerateHMACBC(string Base64Msg, byte[] EK)
+   
+        public static string GenerateHMACBC(byte[] data, byte[] EK)
         {
             var hmac = new HMac(new Sha256Digest());
             hmac.Init(new KeyParameter(EK));
             byte[] hashMessage = new byte[hmac.GetMacSize()];
-            byte[] bytes = Encoding.UTF8.GetBytes(Base64Msg);
-
-            hmac.BlockUpdate(bytes, 0, bytes.Length);
+            hmac.BlockUpdate(data, 0, data.Length);
             hmac.DoFinal(hashMessage, 0);
             return Convert.ToBase64String(hashMessage);
         }

@@ -56,7 +56,8 @@ namespace GSTN.API
 				username = username
 			};
 			model.app_key = EncryptionUtils.RsaEncrypt(GSTNConstants.GetAppKeyBytes());
-			model.otp = EncryptionUtils.AesEncrypt(otp, GSTNConstants.GetAppKeyBytes());
+            byte[] dataToEncrypt = UTF8Encoding.UTF8.GetBytes(otp);
+            model.otp = EncryptionUtils.AesEncrypt(dataToEncrypt, GSTNConstants.GetAppKeyBytes());
 			var output = this.Post<TokenRequestModel, TokenResponseModel>(model);
 
 			this.username = username;

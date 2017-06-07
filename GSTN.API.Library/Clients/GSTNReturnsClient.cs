@@ -36,7 +36,7 @@ namespace GSTN.API
             client.DefaultRequestHeaders.Add("state-cd", this.gstin.Substring(0, 2));
             client.DefaultRequestHeaders.Add("gstin", this.gstin);
             if (!string.IsNullOrEmpty(this.ret_period)) client.DefaultRequestHeaders.Add("ret_period", this.ret_period);
-            client.DefaultRequestHeaders.Add("txn", System.Guid.NewGuid().ToString().Replace("-",""));
+            client.DefaultRequestHeaders.Add("txn", System.Guid.NewGuid().ToString().Replace("-", ""));
             client.DefaultRequestHeaders.Add("username", provider.Username);
             client.DefaultRequestHeaders.Add("auth-token", provider.AuthToken);
         }
@@ -45,13 +45,14 @@ namespace GSTN.API
             T model = default(T);
             if (output != null)
             {
-            byte[] decryptREK = EncryptionUtils.AesDecrypt(output.rek, provider.DecryptedKey);
-            byte[] jsonData = EncryptionUtils.AesDecrypt(output.data, decryptREK);
-            string json = Encoding.UTF8.GetString(jsonData);
-            byte[] decodeJson = Convert.FromBase64String(json);
-            string finalJson = Encoding.UTF8.GetString(decodeJson);
-            model = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(finalJson);
-            LastJson = finalJson;
+                byte[] decryptREK = EncryptionUtils.AesDecrypt(output.rek, provider.DecryptedKey);
+                byte[] jsonData = EncryptionUtils.AesDecrypt(output.data, decryptREK);
+                string testHmac = EncryptionUtils.GenerateHMAC(jsonData, decryptREK);
+                string base64Payload = UTF8Encoding.UTF8.GetString(jsonData);
+                byte[] decodeJson = Convert.FromBase64String(base64Payload);
+                string finalJson = Encoding.UTF8.GetString(decodeJson);
+                model = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(finalJson);
+                LastJson = finalJson;
             }
             return model;
         }
@@ -65,10 +66,11 @@ namespace GSTN.API
                             {
                                 NullValueHandling = NullValueHandling.Ignore
                             });
-            byte[] encodeJson = UTF8Encoding.UTF8.GetBytes(finalJson);
-            string base64Payload = Convert.ToBase64String(encodeJson);
-            info.data = EncryptionUtils.AesEncrypt(base64Payload, provider.DecryptedKey);
-            info.hMAC = EncryptionUtils.GenerateHMAC(base64Payload, provider.DecryptedKey);
+                byte[] encodeJson = UTF8Encoding.UTF8.GetBytes(finalJson);
+                string base64Payload = Convert.ToBase64String(encodeJson);
+                byte[] jsonData = UTF8Encoding.UTF8.GetBytes(base64Payload);
+                info.data = EncryptionUtils.AesEncrypt(jsonData, provider.DecryptedKey);
+                info.hMAC = EncryptionUtils.GenerateHMAC(jsonData, provider.DecryptedKey);
             }
             return info;
         }
@@ -79,7 +81,7 @@ namespace GSTN.API
             resultInfo.HttpStatusCode = response.HttpStatusCode;
             if (resultInfo.HttpStatusCode == (int)HttpStatusCode.OK)
             {
-            resultInfo.Data = data;
+                resultInfo.Data = data;
             }
             return resultInfo;
         }
@@ -87,10 +89,10 @@ namespace GSTN.API
         {
             SignedDataInfo model = new SignedDataInfo
             {
-            action = "RETFILE",
-            sign = sign,
-            st = st,
-            sid = sid
+                action = "RETFILE",
+                sign = sign,
+                st = st,
+                sid = sid
             };
             model.data = data.data;
             var info = this.Post<SignedDataInfo, ResponseDataInfo>(model);
@@ -100,7 +102,7 @@ namespace GSTN.API
             return model2;
 
         }
-         public GSTNResult<SaveInfo> Submit(string ret_prd)
+        public GSTNResult<SaveInfo> Submit(string ret_prd)
         {
             this.PrepareQueryString(new Dictionary<string, string> {
             {"gstin",gstin},
@@ -109,8 +111,8 @@ namespace GSTN.API
             });
             GenerateRequestInfo model = new GenerateRequestInfo()
             {
-                gstin=gstin,
-                ret_period=ret_prd
+                gstin = gstin,
+                ret_period = ret_prd
             };
             var info = this.Post<GenerateRequestInfo, ResponseDataInfo>(model);
             var output = this.Decrypt<SaveInfo>(info.Data);
