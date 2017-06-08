@@ -58,6 +58,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="SampleData\b2bin.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="SampleData\b2bout.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

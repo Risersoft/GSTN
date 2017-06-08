@@ -22,43 +22,40 @@ namespace GSTN.API.GSTR2
 
         [Required]
         [Display(Name = "Taxable value of Goods or Service as per invoice")]
-        public double txval { get; set; }
+        public double? txval { get; set; }
 
         [Required]
         [Display(Name = "IGST Rate as per invoice")]
-        public int irt { get; set; }
+        public double? irt { get; set; }
 
         [Required]
         [Display(Name = "IGST Amount as per invoice")]
-        public int iamt { get; set; }
+        public double? iamt { get; set; }
 
         [Required]
         [Display(Name = "CGST Rate as per invoice")]
-        public double crt { get; set; }
+        public double? crt { get; set; }
 
         [Required]
         [Display(Name = "CGST Amount as per invoice")]
-        public double camt { get; set; }
+        public double? camt { get; set; }
 
         [Required]
         [Display(Name = "SGST Rate as per invoice")]
-        public double srt { get; set; }
+        public double? srt { get; set; }
 
         [Required]
         [Display(Name = "SGST Amount as per invoice")]
-        public double samt { get; set; }
+        public double? samt { get; set; }
 
         [Required]
         [Display(Name = "CESS Rate as per invoice")]
-        public double csrt { get; set; }
+        public double? csrt { get; set; }
 
         [Required]
-        [Display(Name = "Eligiblity of Total Tax available as ITC")]
-        [MaxLength(20)]
-        public string elg { get; set; }
-        [Required]
-        [Display(Name = "CESS Amount as per invoice")]
-        public double csamt { get; set; }
+       [Display(Name = "CESS Amount as per invoice")]
+       public double? csamt { get; set; }
+
     }
 
     public class Itc
@@ -66,35 +63,41 @@ namespace GSTN.API.GSTR2
 
         [Required]
         [Display(Name = "Total Tax available as ITC CGST Amount")]
-        public int tx_c { get; set; }
+        public double? tx_c { get; set; }
 
         [Required]
         [Display(Name = "Total Tax available as ITC IGST Amount")]
-        public int tx_i { get; set; }
+        public double? tx_i { get; set; }
 
         [Required]
         [Display(Name = "Total Tax available as ITC SGST Amount")]
-        public int tx_s { get; set; }
+        public double? tx_s { get; set; }
 
         [Required]
         [Display(Name = "Total Tax available as ITC CESS Amount")]
-        public int tx_cs { get; set; }
+        public double? tx_cs { get; set; }
 
         [Required]
         [Display(Name = "Total Input Tax Credit available for claim this month based on the Invoices uploaded(CGST Amount)")]
-        public int tc_c { get; set; }
+        public double? tc_c { get; set; }
 
         [Required]
         [Display(Name = "Total Input Tax Credit available for claim this month based on the Invoices uploaded(IGST Amount)")]
-        public int tc_i { get; set; }
+        public double? tc_i { get; set; }
 
         [Required]
         [Display(Name = "Total Input Tax Credit available for claim this month based on the Invoices uploaded(SGST Amount)")]
-        public int tc_s { get; set; }
+        public double? tc_s { get; set; }
 
         [Required]
         [Display(Name = "Total Input Tax Credit available for claim this month based on the Invoices uploaded(SGST Amount)")]
-        public int tc_cs { get; set; }
+        public double? tc_cs { get; set; }
+
+        [Required]
+        [Display(Name = "Eligiblity of Total Tax available as ITC")]
+        [MaxLength(20)]
+        public string elg { get; set; }
+
     }
 
     public class Itm
@@ -133,7 +136,7 @@ namespace GSTN.API.GSTR2
 
         [Required]
         [Display(Name = "Supplier Invoice Value")]
-        public double val { get; set; }
+        public double? val { get; set; }
 
         [Required]
         [Display(Name = "Place of supply")]

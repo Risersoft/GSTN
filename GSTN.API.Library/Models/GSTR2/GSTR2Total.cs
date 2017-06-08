@@ -19,19 +19,17 @@ namespace GSTN.API.GSTR2
         public string gstin { get; set; }
 
         [Required]
-        [Display(Name = "Finalcial Period")]
+        [Display(Name = "Financial Period")]
         [MaxLength(10)]
         [MinLength(3)]
         [RegularExpression("^[0-9]+$")]
         public string fp { get; set; }
 
         [Required]
-        [Display(Name = "Gross Turn Over")]
-        public int gt { get; set; }
-
-        [Required]
-        [Display(Name = "Total Tax Liability")]
-        public int ttl { get; set; }
+        [Display(Name = "Claiming Credit under sec 17(3)")]
+        [MaxLength(1)]
+        [MinLength(1)]
+        public string crclm_17_3 { get; set; }
 
         public List<B2bInward> b2b { get; set; }
 

@@ -25,25 +25,13 @@ namespace GSTN.API
 		//API call for getting all B2B invoices for a return period.
 		public GSTNResult<List<B2bInward>> GetB2B(string action_required)
 		{
-			this.PrepareQueryString(new Dictionary<string, string> {
-				{
-					"gstin",
-					gstin
-				},
-				{
-					"action",
-					"B2B"
-				},
-				{
-					"ret_period",
-					this.ret_period
-				},
-				{
-					"action_required",
-					action_required
-				}
-			});
-			var info = this.Get<ResponseDataInfo>();
+            var dic = new Dictionary<string, string>();
+            dic.Add("gstin", this.gstin);
+            dic.Add("ret_period", this.ret_period);
+            dic.Add("action", "B2B");
+            if (!string.IsNullOrEmpty(action_required)) dic.Add("action_required", action_required);
+            this.PrepareQueryString(dic);
+            var info = this.Get<ResponseDataInfo>();
 			var output = this.Decrypt<GSTR2Total>(info.Data);
 			var model = this.BuildResult<List<B2bInward>>(info, output.b2b);
 			return model;

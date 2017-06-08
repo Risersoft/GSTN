@@ -117,7 +117,7 @@ namespace GSTN.API.Console
                     TestGSTR1Save(gstin, fp, ctin,etin);
                     break;
                 case "10":
-                    TestGSTR2Save(gstin, fp);
+                    TestGSTR2Save(gstin, fp, ctin);
                     break;
 
             }
@@ -225,7 +225,7 @@ namespace GSTN.API.Console
             GSTNAuthClient client = GetAuth(gstin);
             GSTR2.GSTR2Total model = new GSTR2.GSTR2Total();
             GSTR2ApiClient client2 = new GSTR2ApiClient(client, gstin, fp);
-            model.b2b = client2.GetB2B("Y").Data;
+            model.b2b = client2.GetB2B("").Data;
             var model2 = client2.GetSummary(fp).Data;
         }
         private static void TestGSTR3(string gstin, string fp)
@@ -275,11 +275,17 @@ namespace GSTN.API.Console
             var info = client2.Save(model);
             GetStatus(client2, info.Data, fp);
         }
-        private static void TestGSTR2Save(string gstin, string fp)
+        private static void TestGSTR2Save(string gstin, string fp, string ctin)
         {
             GSTNAuthClient client = GetAuth(gstin);
             var filename = "sampledata\\b2bin.json";
-            var str1 = File.ReadAllText(filename);
+            if (String.IsNullOrEmpty(ctin))
+            {
+                System.Console.Write("Enter CTIN:");
+                ctin = System.Console.ReadLine();
+            }
+
+            var str1 = File.ReadAllText(filename).Replace("%ctin%", ctin);
             GSTR2.GSTR2Total model = JsonConvert.DeserializeObject<GSTR2.GSTR2Total>(str1);
             model.gstin = gstin;
             model.fp = fp;
