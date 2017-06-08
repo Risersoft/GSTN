@@ -48,7 +48,7 @@ namespace GSTN.API
     public class ResponseDataInfo
     {
         public string data { get; set; }
-        public string status_cD { get; set; }
+        public string status_cd { get; set; }
         public string rek { get; set; }
         public string hmac { get; set; }
     }
@@ -56,7 +56,7 @@ namespace GSTN.API
     {
         public string data { get; set; }
         public string action { get; set; }
-        public string hMAC {get; set;}
+        public string hmac {get; set;}
     }
     public class SignedDataInfo
     {

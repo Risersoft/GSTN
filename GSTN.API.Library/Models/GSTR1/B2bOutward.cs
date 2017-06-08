@@ -23,24 +23,24 @@ namespace GSTN.API.GSTR1
         public double txval { get; set; }
 
         [Display(Name = "IGST Rate as per invoice")]
-        public int? irt { get; set; }
+        public double? irt { get; set; }
 
         [Display(Name = "IGST Amount as per invoice")]
         public double? iamt { get; set; }
         [Display(Name = "CGST Rate as per invoice")]
-        public int? crt { get; set; }
+        public double? crt { get; set; }
 
         [Display(Name = "CGST Amount as per invoice")]
         public double? camt { get; set; }
 
         [Display(Name = "SGST Rate as per invoice")]
-        public int? srt { get; set; }
+        public double? srt { get; set; }
 
         [Display(Name = "SGST Amount as per invoice")]
         public double? samt { get; set; }
 
         [Display(Name = "cess Rate as per invoice")]
-        public int? csrt { get; set; }
+        public double? csrt { get; set; }
 
         [Display(Name = "cess Amount as per invoice")]
         public double? csamt { get; set; }

@@ -48,6 +48,7 @@ namespace GSTN.API
                 byte[] decryptREK = EncryptionUtils.AesDecrypt(output.rek, provider.DecryptedKey);
                 byte[] jsonData = EncryptionUtils.AesDecrypt(output.data, decryptREK);
                 string testHmac = EncryptionUtils.GenerateHMAC(jsonData, decryptREK);
+                System.Console.WriteLine("HMAC Match:" + (output.hmac==testHmac));
                 string base64Payload = UTF8Encoding.UTF8.GetString(jsonData);
                 byte[] decodeJson = Convert.FromBase64String(base64Payload);
                 string finalJson = Encoding.UTF8.GetString(decodeJson);
@@ -65,12 +66,12 @@ namespace GSTN.API
                             new JsonSerializerSettings
                             {
                                 NullValueHandling = NullValueHandling.Ignore
-                            });
+                            }) ;
                 byte[] encodeJson = UTF8Encoding.UTF8.GetBytes(finalJson);
                 string base64Payload = Convert.ToBase64String(encodeJson);
                 byte[] jsonData = UTF8Encoding.UTF8.GetBytes(base64Payload);
                 info.data = EncryptionUtils.AesEncrypt(jsonData, provider.DecryptedKey);
-                info.hMAC = EncryptionUtils.GenerateHMAC(jsonData, provider.DecryptedKey);
+                info.hmac = EncryptionUtils.GenerateHMAC(jsonData, provider.DecryptedKey);
             }
             return info;
         }

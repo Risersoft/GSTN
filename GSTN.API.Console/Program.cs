@@ -218,7 +218,6 @@ namespace GSTN.API.Console
             GSTR1.GSTR1Total model = new GSTR1.GSTR1Total();
             GSTR1ApiClient client2 = new GSTR1ApiClient(client, gstin, fp);
             model.b2b = client2.GetB2B("").Data;
-            model.b2cl = client2.GetB2CL("01").Data;
 
         }
         private static void TestGSTR2Get(string gstin, string fp)
@@ -227,7 +226,6 @@ namespace GSTN.API.Console
             GSTR2.GSTR2Total model = new GSTR2.GSTR2Total();
             GSTR2ApiClient client2 = new GSTR2ApiClient(client, gstin, fp);
             model.b2b = client2.GetB2B("Y").Data;
-            model.imp_g = client2.GetImpG(fp).Data;
             var model2 = client2.GetSummary(fp).Data;
         }
         private static void TestGSTR3(string gstin, string fp)
