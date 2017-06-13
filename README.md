@@ -16,13 +16,13 @@ Usage:
 
 Status:
 
-| API    | Implemented           | Pending               | 
-|--------|-----------------------|-----------------------|
-| Auth   | OTPRequest, AuthToken | RefreshToken          |
-| GSTR1  | Get, Save, File       |                       |
-| GSTR2  | Get, Save, File       |                       |
-| GSTR3  | Get, Save, File       |                       |
-| Ledger | Get, Save             |                       |
+| API    | Implemented                        | 
+|--------|------------------------------------|
+| Auth   | OTPRequest, AuthToken,RefreshToken |         
+| GSTR1  | Get, Save, File                    |
+| GSTR2  | Get, Save, File                    |
+| GSTR3  | Get, Save, File                    |
+| Ledger | Get, Save                          |
 
 Star Attraction
 - JSON to CSV conversion
