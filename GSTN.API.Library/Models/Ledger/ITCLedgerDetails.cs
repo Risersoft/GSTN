@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace GSTN.API.Ledger
+namespace Risersoft.API.GSTN.Ledger
 {
 
         

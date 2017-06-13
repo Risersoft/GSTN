@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 //class properties does not match to schema like 'ttl_inv','ttl_tax','ttl_igst','ttl_sgst','ttl_cgst'
 // in excel file not mention ctin while use return section
-namespace GSTN.API.GSTR2
+namespace Risersoft.API.GSTN.GSTR2
 {
     public class CptySum
     {

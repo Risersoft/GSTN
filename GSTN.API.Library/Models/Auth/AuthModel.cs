@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GSTN.API.Auth
+namespace Risersoft.API.GSTN.Auth
 {
     public class OTPRequestModel
     {
@@ -16,6 +16,7 @@ namespace GSTN.API.Auth
     {
         public string otp { get; set; }
     }
+
     public class OTPResponseModel
     {
         public string status_cd { get; set; }
@@ -26,5 +27,8 @@ namespace GSTN.API.Auth
         public int expiry { get; set; }
         public string sek { get; set; }
     }
-
+    public class RefreshTokenModel : OTPRequestModel
+    {
+        public string auth_token { get; set; }
+    }
 }

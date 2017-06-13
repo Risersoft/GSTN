@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using GSTN.API;
-using GSTN.API.Auth;
-namespace GSTN.API
+using Risersoft.API.GSTN;
+using Risersoft.API.GSTN.Auth;
+namespace Risersoft.API.GSTN
 {
 	public class GSTNAuthClient : GSTNApiClientBase, IGSTNAuthProvider
 	{
@@ -70,10 +70,29 @@ namespace GSTN.API
 
 		}
 
-		//TODO: Auto extension of token.
-	}
+        public GSTNResult<TokenResponseModel> RefreshToken()
+        {
+            RefreshTokenModel model = new RefreshTokenModel
+            {
+                action = "REFRESHTOKEN",
+                username = username
+            };
+            model.app_key = EncryptionUtils.AesEncrypt(GSTNConstants.GetAppKeyBytes(), this.DecryptedKey);
+            model.auth_token = this.AuthToken;
+            var output = this.Post<RefreshTokenModel, TokenResponseModel>(model);
+
+            token = output.Data;
+            this.AuthToken = token.auth_token;
+            this.DecryptedKey = EncryptionUtils.AesDecrypt(token.sek, GSTNConstants.GetAppKeyBytes());
+            var Decipher = System.Text.Encoding.UTF8.GetString(DecryptedKey);
+
+            return output;
+
+        }
+
+    }
 }
-namespace GSTN.API
+namespace Risersoft.API.GSTN
 {
 	public interface IGSTNAuthProvider
 	{

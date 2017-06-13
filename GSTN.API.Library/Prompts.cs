@@ -8,7 +8,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-namespace GSTN.API
+namespace Risersoft.API.GSTN
 {
 
 	class Prompts

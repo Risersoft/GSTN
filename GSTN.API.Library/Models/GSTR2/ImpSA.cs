@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GSTN.API.GSTR2
+namespace Risersoft.API.GSTN.GSTR2
 {
     public class ImpSAItm : ImpSItm
     {

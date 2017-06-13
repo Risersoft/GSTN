@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 
-namespace GSTN.API.GSTR1
+namespace Risersoft.API.GSTN.GSTR1
 {
     public class EComItm : B2Bitem
     {

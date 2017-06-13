@@ -4,7 +4,7 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace GSTN.API.GSTR3
+namespace Risersoft.API.GSTN.GSTR3
 {
     public class GSTR3Total
     {

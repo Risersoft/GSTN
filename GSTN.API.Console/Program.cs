@@ -1,6 +1,6 @@
 ﻿using eSignASPLib;
 using eSignASPLib.DTO;
-using GSTN.API;
+using Risersoft.API.GSTN;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Bcpg.OpenPgp.Examples;
@@ -12,7 +12,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GSTN.API.Console
+namespace Risersoft.API.GSTN.Console
 {
     class Program
     {
@@ -75,7 +75,7 @@ namespace GSTN.API.Console
 
             System.Console.WriteLine("1=GSTR1 Get, 2=GSTR2 Get, 3=GSTR3 Get, 4=Ledger, " +
                 "5=File with eSign, 6=CSV conversion, 7=PGP, 8=File With DSC, " +
-                "9=GSTR1 Save, 10=GSTR2 Save, 11=GSTR3 Save");
+                "9=GSTR1 Save, 10=GSTR2 Save, 11=GSTR3 Save, 12=Refresh Token");
             string selection = System.Console.ReadLine();
 
             switch (selection)
@@ -118,6 +118,10 @@ namespace GSTN.API.Console
                     break;
                 case "10":
                     TestGSTR2Save(gstin, fp, ctin);
+                    break;
+                case "12":
+                    GSTNAuthClient client = GetAuth(gstin);
+                    client.RefreshToken();
                     break;
 
             }

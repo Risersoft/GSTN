@@ -5,10 +5,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using GSTN.API;
-using GSTN.API.Ledger;
+using Risersoft.API.GSTN;
+using Risersoft.API.GSTN.Ledger;
 
-namespace GSTN.API
+namespace Risersoft.API.GSTN
 {
     public class LedgerApiClient : GSTNReturnsClient
     {

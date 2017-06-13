@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GSTN.API.GSTR1
+namespace Risersoft.API.GSTN.GSTR1
 {
     public class B2CSAOutward : B2csOutward
 

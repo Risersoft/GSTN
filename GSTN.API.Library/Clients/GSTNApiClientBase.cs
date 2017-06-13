@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.Owin.Infrastructure;
 using Newtonsoft.Json;
-using GSTN.API;
+using Risersoft.API.GSTN;
 using System.Threading.Tasks;
 using System.Net.Security;
 

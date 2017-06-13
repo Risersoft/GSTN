@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GSTN.API.Ledger
+namespace Risersoft.API.GSTN.Ledger
 {
     public class TaxEntry
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
-namespace GSTN.API.GSTR2
+namespace Risersoft.API.GSTN.GSTR2
 {
     public class NilSupplyData
     {

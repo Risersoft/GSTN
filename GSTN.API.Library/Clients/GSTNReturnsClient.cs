@@ -11,8 +11,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
-using GSTN.API;
-namespace GSTN.API
+using Risersoft.API.GSTN;
+namespace Risersoft.API.GSTN
 {
 
     public class GSTNReturnsClient : GSTNApiClientBase

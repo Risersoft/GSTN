@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GSTN.API
+namespace Risersoft.API.GSTN
 {
     public class GSTNConstants
     {

@@ -8,9 +8,9 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
-using GSTN.API;
-using GSTN.API.GSTR1;
-namespace GSTN.API
+using Risersoft.API.GSTN;
+using Risersoft.API.GSTN.GSTR1;
+namespace Risersoft.API.GSTN
 {
 
     public class GSTR1ApiClient : GSTNReturnsClient
