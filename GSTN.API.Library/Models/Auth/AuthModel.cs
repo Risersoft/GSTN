@@ -31,4 +31,14 @@ namespace Risersoft.API.GSTN.Auth
     {
         public string auth_token { get; set; }
     }
+
+    public class RegisterDSCModel 
+    {
+        public string data { get; set; }
+        public string sign { get; set; }
+    }
+
+
 }
+
+

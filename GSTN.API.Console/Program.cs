@@ -75,7 +75,7 @@ namespace Risersoft.API.GSTN.Console
 
             System.Console.WriteLine("1=GSTR1 Get, 2=GSTR2 Get, 3=GSTR3 Get, 4=Ledger, " +
                 "5=File with eSign, 6=CSV conversion, 7=PGP, 8=File With DSC, " +
-                "9=GSTR1 Save, 10=GSTR2 Save, 11=GSTR3 Save, 12=Refresh Token");
+                "9=GSTR1 Save, 10=GSTR2 Save, 11=GSTR3 Save, 12=Refresh Token, 13=Register DSC");
             string selection = System.Console.ReadLine();
 
             switch (selection)
@@ -123,6 +123,12 @@ namespace Risersoft.API.GSTN.Console
                     GSTNAuthClient client = GetAuth(gstin);
                     client.RefreshToken();
                     break;
+                case "13":
+                    System.Console.Write("Enter your PAN:");
+                    string pan2 = System.Console.ReadLine();
+                    RegisterDSC(gstin, pan2);
+                    break;
+
 
             }
 
@@ -197,9 +203,18 @@ namespace Risersoft.API.GSTN.Console
 
             var cert = DSCUtils.getCertificate();
 
-            var json4 = Encoding.Unicode.GetString(DSCUtils.Sign(json3, cert));
+            var json4 = Convert.ToBase64String(DSCUtils.Sign(json3, cert));
             var result4 = client2.File(model2, json4, "DSC", pan);
 
+        }
+        private static void RegisterDSC(string gstin, string pan)
+        {
+            GSTNAuthClient client = GetAuth(gstin);
+            GSTNDSClient client2 = new GSTNDSClient(client, gstin);
+
+            var cert = DSCUtils.getCertificate();
+            var sign =Convert.ToBase64String(DSCUtils.SignCms(pan, cert));
+            var result = client2.RegisterDSC(pan, sign);
         }
 
         private static GSTNAuthClient GetAuth(string gstin)

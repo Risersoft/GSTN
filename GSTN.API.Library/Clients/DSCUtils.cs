@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Org.BouncyCastle.Cms;
+using Org.BouncyCastle.Security;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,15 +68,7 @@ namespace Risersoft.API.GSTN
         public static byte[] Sign(string text, X509Certificate2 cert)
 
         {
-
-            // Access Personal (MY) certificate store of current user
-
-            X509Store my = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-
-            my.Open(OpenFlags.ReadOnly);
-
-            // Find the certificate we’ll use to sign
-
+           
             RSACryptoServiceProvider csp = (RSACryptoServiceProvider)cert.PrivateKey;
 
           
@@ -85,23 +80,40 @@ namespace Risersoft.API.GSTN
 
             }
 
-            // Hash the data
+            // This one can:
+            RSACryptoServiceProvider csp2 = new RSACryptoServiceProvider();
+            csp2.ImportParameters(csp.ExportParameters(true));
 
-            SHA1Managed sha1 = new SHA1Managed();
+            byte[] data = Encoding.UTF8.GetBytes(text);
 
-            UnicodeEncoding encoding = new UnicodeEncoding();
+            byte[] signature = csp2.SignData(data, CryptoConfig.CreateFromName("SHA256"));
 
-            byte[] data = encoding.GetBytes(text);
+            bool isValid = csp2.VerifyData(data, CryptoConfig.CreateFromName("SHA256"), signature);
 
-            byte[] hash = sha1.ComputeHash(data);
+            return signature;
 
-            // Sign the hash
-
-            return csp.SignHash(hash, CryptoConfig.MapNameToOID("SHA1"));
 
         }
 
-     public   static bool Verify(string text, byte[] signature, string certPath)
+        public static byte[] SignCms(string text, X509Certificate2 cert)
+        {
+            byte[] data = Encoding.UTF8.GetBytes(text);
+            ContentInfo contentInfo = new ContentInfo(data);
+            SignedCms signedCms = new SignedCms(contentInfo);
+            CmsSigner cmsSigner = new CmsSigner(cert);
+            cmsSigner.DigestAlgorithm = new Oid("SHA256");
+            cmsSigner.IncludeOption = X509IncludeOption.WholeChain;
+            signedCms.ComputeSignature(cmsSigner, false);
+            return signedCms.Encode();
+
+        }
+
+
+
+
+
+
+        public static bool Verify(string text, byte[] signature, string certPath)
 
         {
 
@@ -134,7 +146,33 @@ namespace Risersoft.API.GSTN
             return csp.VerifyHash(hash, CryptoConfig.MapNameToOID("SHA1"), signature);
 
         }
+        public static byte[] SignBC(string text, X509Certificate2 cert)
+
+        {
+
+            Org.BouncyCastle.X509.X509Certificate cert2 = DotNetUtilities.FromX509Certificate(cert);
+            Org.BouncyCastle.Crypto.AsymmetricKeyParameter K = DotNetUtilities.GetKeyPair(cert.PrivateKey).Private;
+            CmsSignedDataGenerator generator = new CmsSignedDataGenerator();
+            generator.AddSigner(K, cert2, CmsSignedDataGenerator.EncryptionRsa, CmsSignedDataGenerator.DigestSha256);
+
+            List<Org.BouncyCastle.X509.X509Certificate> certList = new List<Org.BouncyCastle.X509.X509Certificate>();
+            certList.Add(cert2);
+
+            Org.BouncyCastle.X509.Store.X509CollectionStoreParameters PP = new Org.BouncyCastle.X509.Store.X509CollectionStoreParameters(certList);
+            Org.BouncyCastle.X509.Store.IX509Store st1 = Org.BouncyCastle.X509.Store.X509StoreFactory.Create("CERTIFICATE/COLLECTION", PP);
+
+            generator.AddCertificates(st1);
+            byte[] data = Encoding.UTF8.GetBytes(text);
+
+            CmsSignedData signedData = generator.Generate(new CmsProcessableByteArray(data), true);
+
+            return signedData.GetEncoded();
+
+
+
+        }
     }
 }
 //http://www.a2zmenu.com/blogs/csharp/how-to-fetch-certificate-details-from-c-sharp-code.aspx
 //http://stackoverflow.com/questions/15137816/how-to-get-information-from-a-security-token-with-c-sharp
+//https://stackoverflow.com/questions/5728237/bouncy-castle-smart-card-certificate

@@ -100,6 +100,7 @@
     <Compile Include="Clients\DSCUtils.cs" />
     <Compile Include="Clients\EncryptionUtils.cs" />
     <Compile Include="Clients\GSTNApiClientBase.cs" />
+    <Compile Include="Clients\GSTNDSClient.cs" />
     <Compile Include="Clients\GSTNAuthClient.cs" />
     <Compile Include="Clients\GSTNReturnsClient.cs" />
     <Compile Include="Clients\GSTR1ApiClient.cs" />
