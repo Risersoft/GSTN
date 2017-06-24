@@ -4,13 +4,6 @@
         <name>GSTN.API.Library</name>
     </assembly>
     <members>
-        <member name="M:Risersoft.API.GSTN.EncryptionUtils.Generatehash256(System.String)">
-            <summary>
-            Generate Hash value from given string value
-            </summary>
-            <param name="text"></param>
-            <returns>A managed SHA 256 hash value</returns>
-        </member>
         <member name="T:Risersoft.API.GSTN.My.Resources.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.

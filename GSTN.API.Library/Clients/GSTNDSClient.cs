@@ -11,6 +11,7 @@ using System.Net.Http;
 using Risersoft.API.GSTN;
 using Risersoft.API.GSTN.GSTR1;
 using Risersoft.API.GSTN.Auth;
+using Newtonsoft.Json;
 
 namespace Risersoft.API.GSTN
 {
@@ -30,7 +31,7 @@ namespace Risersoft.API.GSTN
             client.DefaultRequestHeaders.Add("client-secret", GSTNConstants.client_secret);
             client.DefaultRequestHeaders.Add("ip-usr", GSTNConstants.publicip);
             client.DefaultRequestHeaders.Add("state-cd", "11");
-            client.DefaultRequestHeaders.Add("txn", "Txn1");
+            client.DefaultRequestHeaders.Add("txn", System.Guid.NewGuid().ToString().Replace("-", ""));
             client.DefaultRequestHeaders.Add("username", provider.Username);
             client.DefaultRequestHeaders.Add("auth-token", provider.AuthToken);
         }

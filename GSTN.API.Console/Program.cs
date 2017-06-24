@@ -177,8 +177,8 @@ namespace Risersoft.API.GSTN.Console
             //https://groups.google.com/forum/#!searchin/gst-suvidha-provider-gsp-discussion-group/authorized|sort:relevance/gst-suvidha-provider-gsp-discussion-group/9-_Mk7LatDs/eQ6_1kHTBAAJ
             //https://groups.google.com/forum/#!searchin/gst-suvidha-provider-gsp-discussion-group/authorized|sort:relevance/gst-suvidha-provider-gsp-discussion-group/acd-F7XPYz4/7z83KM4IBgAJ
 
-            var json2 = Convert.ToBase64String(Encoding.UTF8.GetBytes(client2.LastJson));
-            var json3 = EncryptionUtils.sha256_hash(json2);
+            var Base64Payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(client2.LastJson));
+            var Base64Hash = Convert.ToBase64String(EncryptionUtils.sha256_hash(Base64Payload));
 
             AuthMetaDetails MetaDetails = new AuthMetaDetails();
             MetaDetails.fdc = "NA";
@@ -188,7 +188,7 @@ namespace Risersoft.API.GSTN.Console
             MetaDetails.lov = "560103";
             MetaDetails.idc = "NA";
 
-            var json4 = eSignObj.SignText(aadhaarnum, Otp, transactionId, json3, MetaDetails);
+            var json4 = eSignObj.SignText(aadhaarnum, Otp, transactionId, Base64Hash, MetaDetails);
             var result4 = client2.File(model2, json4.SignedText, "Esign", aadhaarnum);
 
         }
@@ -198,12 +198,12 @@ namespace Risersoft.API.GSTN.Console
             GSTR1ApiClient client2 = new GSTR1ApiClient(client, gstin, fp);
             var model2 = client2.GetSummary(fp).Data;
 
-            var json2 = Convert.ToBase64String(Encoding.UTF8.GetBytes(client2.LastJson));
-            var json3 = EncryptionUtils.sha256_hash(json2);
+            var base64PayLoad = Convert.ToBase64String(Encoding.UTF8.GetBytes(client2.LastJson));
+            var PayLoadHash = EncryptionUtils.sha256_hash(base64PayLoad);
 
             var cert = DSCUtils.getCertificate();
 
-            var json4 = Convert.ToBase64String(DSCUtils.Sign(json3, cert));
+            var json4 = Convert.ToBase64String(DSCUtils.SignCms(PayLoadHash, cert));
             var result4 = client2.File(model2, json4, "DSC", pan);
 
         }
@@ -213,7 +213,8 @@ namespace Risersoft.API.GSTN.Console
             GSTNDSClient client2 = new GSTNDSClient(client, gstin);
 
             var cert = DSCUtils.getCertificate();
-            var sign =Convert.ToBase64String(DSCUtils.SignCms(pan, cert));
+            byte[] data = Encoding.UTF8.GetBytes(pan);
+            var sign =Convert.ToBase64String(DSCUtils.SignCms(data, cert));
             var result = client2.RegisterDSC(pan, sign);
         }
 

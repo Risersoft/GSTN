@@ -95,20 +95,21 @@ namespace Risersoft.API.GSTN
 
         }
 
-        public static byte[] SignCms(string text, X509Certificate2 cert)
+   
+
+        public static byte[] SignCms(byte[] data, X509Certificate2 cert)
         {
-            byte[] data = Encoding.UTF8.GetBytes(text);
+
+   
             ContentInfo contentInfo = new ContentInfo(data);
             SignedCms signedCms = new SignedCms(contentInfo);
             CmsSigner cmsSigner = new CmsSigner(cert);
             cmsSigner.DigestAlgorithm = new Oid("SHA256");
-            cmsSigner.IncludeOption = X509IncludeOption.WholeChain;
-            signedCms.ComputeSignature(cmsSigner, false);
+            cmsSigner.IncludeOption = X509IncludeOption.EndCertOnly;
+            signedCms.ComputeSignature(cmsSigner);
             return signedCms.Encode();
 
         }
-
-
 
 
 
