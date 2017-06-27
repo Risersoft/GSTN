@@ -32,7 +32,7 @@ namespace Risersoft.API.GSTN
 		public static X509Certificate2 getPublicKey()
 		{
 			RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
-			X509Certificate2 cert2 = new X509Certificate2("Resources\\GSTN_public.cer");
+			X509Certificate2 cert2 = new X509Certificate2(System.IO.Path.Combine(GSTNConstants.base_path,"Resources\\GSTN_public.cer"));
 			return cert2;
 		}
 

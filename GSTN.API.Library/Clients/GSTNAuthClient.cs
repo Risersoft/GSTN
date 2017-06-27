@@ -20,13 +20,14 @@ namespace Risersoft.API.GSTN
 		TokenResponseModel token;
 		public string AuthToken { get; set; }
 		public byte[] DecryptedKey { get; set; }
-		public string username { get; set; }
+		public string userid { get; set; }
 		string IGSTNAuthProvider.Username {
-			get { return username; }
-			set { username = value; }
+			get { return userid; }
+			set { userid = value; }
 		}
-		public GSTNAuthClient(string gstin) : base("/taxpayerapi/v0.2/authenticate",gstin)
+		public GSTNAuthClient(string gstin, string userid) : base("/taxpayerapi/v0.2/authenticate",gstin)
 		{
+            this.userid = userid;
 		}
 		protected internal override void BuildHeaders(HttpClient client)
 		{
@@ -39,28 +40,28 @@ namespace Risersoft.API.GSTN
         }
 
 
-		public GSTNResult<OTPResponseModel> RequestOTP(string username)
+		public GSTNResult<OTPResponseModel> RequestOTP()
 		{
 			OTPRequestModel model = new OTPRequestModel {
 				action = "OTPREQUEST",
-				username = username,
+				username = userid,
                 app_key = EncryptionUtils.RsaEncrypt(GSTNConstants.GetAppKeyBytes())
         };
 			var output = this.Post<OTPRequestModel, OTPResponseModel>(model);
 			return output;
 		}
-		public GSTNResult<TokenResponseModel> RequestToken(string username, string otp)
+		public GSTNResult<TokenResponseModel> RequestToken(string otp)
 		{
 			TokenRequestModel model = new TokenRequestModel {
 				action = "AUTHTOKEN",
-				username = username
+				username = userid
 			};
 			model.app_key = EncryptionUtils.RsaEncrypt(GSTNConstants.GetAppKeyBytes());
             byte[] dataToEncrypt = UTF8Encoding.UTF8.GetBytes(otp);
             model.otp = EncryptionUtils.AesEncrypt(dataToEncrypt, GSTNConstants.GetAppKeyBytes());
 			var output = this.Post<TokenRequestModel, TokenResponseModel>(model);
 
-			this.username = username;
+			this.userid = userid;
 			token = output.Data;
 			this.AuthToken = token.auth_token;
 			this.DecryptedKey = EncryptionUtils.AesDecrypt(token.sek, GSTNConstants.GetAppKeyBytes());
@@ -75,7 +76,7 @@ namespace Risersoft.API.GSTN
             RefreshTokenModel model = new RefreshTokenModel
             {
                 action = "REFRESHTOKEN",
-                username = username
+                username = userid
             };
             model.app_key = EncryptionUtils.AesEncrypt(GSTNConstants.GetAppKeyBytes(), this.DecryptedKey);
             model.auth_token = this.AuthToken;

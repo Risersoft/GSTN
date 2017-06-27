@@ -19,7 +19,7 @@ namespace Risersoft.API.GSTN.Console
         static eSign eSignObj;
         static void Main(string[] args)
         {
-            string gstin = "", fp = "", filename = "", ctin = "",etin="";
+            string gstin = "", userid="", fp = "", filename = "", ctin = "",etin="";
        
             if ((args != null) && (System.IO.File.Exists(args[0])))
             {
@@ -38,7 +38,7 @@ namespace Risersoft.API.GSTN.Console
                 string[] arr = Strings.Split(fileContents, Constants.vbCrLf);
                 GSTNConstants.client_id = arr[0];
                 GSTNConstants.client_secret = arr[1];
-                GSTNConstants.userid = arr[2];
+                userid = arr[2];
                 gstin = arr[3];
                 fp = arr[4];
                 ctin = arr[5];
@@ -54,7 +54,7 @@ namespace Risersoft.API.GSTN.Console
                 GSTNConstants.client_secret = System.Console.ReadLine();
 
                 System.Console.Write("Enter UserID:");
-                GSTNConstants.userid = System.Console.ReadLine();
+                userid = System.Console.ReadLine();
 
                 System.Console.Write("Enter GSTIN:");
                 gstin = System.Console.ReadLine();
@@ -81,16 +81,16 @@ namespace Risersoft.API.GSTN.Console
             switch (selection)
             {
                 case "1":
-                    TestGSTR1Get(gstin, fp);
+                    TestGSTR1Get(gstin, userid, fp);
                     break;
                 case "2":
-                    TestGSTR2Get(gstin, fp);
+                    TestGSTR2Get(gstin, userid, fp);
                     break;
                 case "3":
-                    TestGSTR3(gstin, fp);
+                    TestGSTR3(gstin, userid, fp);
                     break;
                 case "4":
-                    TestLedger(gstin, "19-08-2016", "20-09-2016");
+                    TestLedger(gstin, userid, "19-08-2016", "20-09-2016");
                     break;
                 case "5":
                     System.Console.Write("Enter path to license file:");
@@ -100,10 +100,10 @@ namespace Risersoft.API.GSTN.Console
                     string transactionid = GetUIDAIOtp(path, aadhaarnum);
                     System.Console.Write("Enter OTP:");
                     string otp = System.Console.ReadLine();
-                    FileGSTR1WithESign(gstin, fp, aadhaarnum, transactionid, otp);
+                    FileGSTR1WithESign(gstin, userid, fp, aadhaarnum, transactionid, otp);
                     break;
                 case "6":
-                    TestCSV(gstin, fp);
+                    TestCSV(gstin, userid, fp);
                     break;
                 case "7":
                     TestPGP("the quick brown fox jumped over the lazy dog");
@@ -111,22 +111,22 @@ namespace Risersoft.API.GSTN.Console
                 case "8":
                     System.Console.Write("Enter your PAN:");
                     string pan = System.Console.ReadLine();
-                    FileGSTR1WithDSC(gstin, fp, pan);
+                    FileGSTR1WithDSC(gstin, userid, fp, pan);
                     break;
                 case "9":
-                    TestGSTR1Save(gstin, fp, ctin,etin);
+                    TestGSTR1Save(gstin, userid, fp, ctin,etin);
                     break;
                 case "10":
-                    TestGSTR2Save(gstin, fp, ctin);
+                    TestGSTR2Save(gstin, userid, fp, ctin);
                     break;
                 case "12":
-                    GSTNAuthClient client = GetAuth(gstin);
+                    GSTNAuthClient client = GetAuth(gstin, userid);
                     client.RefreshToken();
                     break;
                 case "13":
                     System.Console.Write("Enter your PAN:");
                     string pan2 = System.Console.ReadLine();
-                    RegisterDSC(gstin, pan2);
+                    RegisterDSC(gstin, userid, pan2);
                     break;
 
 
@@ -168,9 +168,9 @@ namespace Risersoft.API.GSTN.Console
             Response OTPResponse = eSignObj.GetOTP(aadhaarnum, guid);
             return guid;
         }
-        private static void FileGSTR1WithESign(string gstin, string fp, string aadhaarnum, string transactionId, string Otp)
+        private static void FileGSTR1WithESign(string gstin, string userid, string fp, string aadhaarnum, string transactionId, string Otp)
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin,userid);
             GSTR1ApiClient client2 = new GSTR1ApiClient(client, gstin, fp);
             var model2 = client2.GetSummary(fp).Data;
 
@@ -192,9 +192,9 @@ namespace Risersoft.API.GSTN.Console
             var result4 = client2.File(model2, json4.SignedText, "Esign", aadhaarnum);
 
         }
-        private static void FileGSTR1WithDSC(string gstin, string fp, string pan)
+        private static void FileGSTR1WithDSC(string gstin, string userid, string fp, string pan)
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin, userid);
             GSTR1ApiClient client2 = new GSTR1ApiClient(client, gstin, fp);
             var model2 = client2.GetSummary(fp).Data;
 
@@ -207,9 +207,9 @@ namespace Risersoft.API.GSTN.Console
             var result4 = client2.File(model2, json4, "DSC", pan);
 
         }
-        private static void RegisterDSC(string gstin, string pan)
+        private static void RegisterDSC(string gstin, string userid, string pan)
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin, userid);
             GSTNDSClient client2 = new GSTNDSClient(client, gstin);
 
             var cert = DSCUtils.getCertificate();
@@ -218,53 +218,53 @@ namespace Risersoft.API.GSTN.Console
             var result = client2.RegisterDSC(pan, sign);
         }
 
-        private static GSTNAuthClient GetAuth(string gstin)
+        private static GSTNAuthClient GetAuth(string gstin, string userid)
         {
 
-            GSTNAuthClient client = new GSTNAuthClient(gstin);
-            var result = client.RequestOTP(GSTNConstants.userid);
+            GSTNAuthClient client = new GSTNAuthClient(gstin, userid);
+            var result = client.RequestOTP();
 
             System.Console.Write("Enter OTP:");
             string otp = System.Console.ReadLine();
 
-            var result2 = client.RequestToken(GSTNConstants.userid, otp);
+            var result2 = client.RequestToken(otp);
             return client;
         }
 
-        private static void TestGSTR1Get(string gstin, string fp)
+        private static void TestGSTR1Get(string gstin, string userid, string fp)
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin, userid);
 
             GSTR1.GSTR1Total model = new GSTR1.GSTR1Total();
             GSTR1ApiClient client2 = new GSTR1ApiClient(client, gstin, fp);
             model.b2b = client2.GetB2B("").Data;
 
         }
-        private static void TestGSTR2Get(string gstin, string fp)
+        private static void TestGSTR2Get(string gstin, string userid, string fp)
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin, userid);
             GSTR2.GSTR2Total model = new GSTR2.GSTR2Total();
             GSTR2ApiClient client2 = new GSTR2ApiClient(client, gstin, fp);
             model.b2b = client2.GetB2B("").Data;
             var model2 = client2.GetSummary(fp).Data;
         }
-        private static void TestGSTR3(string gstin, string fp)
+        private static void TestGSTR3(string gstin, string userid, string fp)
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin, userid);
             GSTR3.GSTR3Total model = new GSTR3.GSTR3Total();
             GSTR3ApiClient client2 = new GSTR3ApiClient(client, gstin, fp);
             var info = client2.Generate(fp).Data;
             model = client2.GetDetails(fp).Data;
         }
-        private static void TestLedger(string gstin, string fr_dt, string to_dt)
+        private static void TestLedger(string gstin, string userid, string fr_dt, string to_dt)
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin, userid);
             LedgerApiClient client2 = new LedgerApiClient(client, gstin);
             var info = client2.GetCashDtl(gstin, fr_dt, to_dt).Data;
         }
-        private static string TestCSV(string gstin, string fp)
+        private static string TestCSV(string gstin, string userid, string fp)
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin, userid);
             GSTR1.GSTR1Total model = new GSTR1.GSTR1Total();
             GSTR1ApiClient client2 = new GSTR1ApiClient(client, gstin, fp);
             model.b2b = client2.GetB2B("Y").Data;
@@ -273,9 +273,9 @@ namespace Risersoft.API.GSTN.Console
             string str1 = client3.Json2CSV(client2.LastJson, "gstr1", "b2b").Data;
             return str1;
         }
-        private static void TestGSTR1Save(string gstin, string fp, string ctin, string etin )
+        private static void TestGSTR1Save(string gstin, string userid, string fp, string ctin, string etin )
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin, userid);
             var filename = "sampledata\\b2bout.json";
             if (String.IsNullOrEmpty(ctin)) {
                 System.Console.Write("Enter CTIN:");
@@ -295,9 +295,9 @@ namespace Risersoft.API.GSTN.Console
             var info = client2.Save(model);
             GetStatus(client2, info.Data, fp);
         }
-        private static void TestGSTR2Save(string gstin, string fp, string ctin)
+        private static void TestGSTR2Save(string gstin, string userid, string fp, string ctin)
         {
-            GSTNAuthClient client = GetAuth(gstin);
+            GSTNAuthClient client = GetAuth(gstin, userid);
             var filename = "sampledata\\b2bin.json";
             if (String.IsNullOrEmpty(ctin))
             {

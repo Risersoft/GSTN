@@ -9,10 +9,10 @@ namespace Risersoft.API.GSTN
     public class GSTNConstants
     {
         public static byte[] appKey = null;
-        public const string base_url = "http://devapi.gstsystem.co.in";
+        public static string base_url = "http://devapi.gstsystem.co.in";
+        public static string base_path = ".";
         public static string client_id = "";
         public static string client_secret = "";
-        public static string userid = "";
         public static string publicip = "";
 
         public static byte[] GetAppKeyBytes()
