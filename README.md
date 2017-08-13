@@ -1,7 +1,7 @@
 # GSTN 
 GSTN API Client
 
-This project is a strongly typed client for GSTN APIs as per http://developer.gstsystem.co.in/apiportal/
+This project is an open source strongly typed client for GSTN APIs as per http://developer.gstsystem.co.in/apiportal/
 
 This work was born due to GST integration in Risersoft (www.risersoft.com) Maximprise manufacturing ERP (www.maximprise.com).
 Subsequently it was also used in Risersoft GstNirvana (www.gstnirvana.com).
@@ -15,7 +15,7 @@ Usage:
 - GSTN is constantly evolving the APIs.
 - Hence, it is recommended to use the GSTN.API.Library.dll directly in your projects
 - This will enable easy updation in case of change
-- For current APIs, pl refer GSTN-API-Samples repository
+- For closed source library with a more up-to-date implementation, pl refer https://github.com/Risersoft/GSTN-API-Sample/
 
 Status:
 
