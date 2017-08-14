@@ -15,7 +15,7 @@ Usage:
 - GSTN is constantly evolving the APIs.
 - Hence, it is recommended to use the GSTN.API.Library.dll directly in your projects
 - This will enable easy updation in case of change
-- For closed source library with a more up-to-date implementation, pl refer https://github.com/Risersoft/GSTN-API-Sample/
+- For closed source library with a more up-to-date implementation, pl refer https://github.com/Risersoft/GST-API-Sample/
 
 Status:
 
