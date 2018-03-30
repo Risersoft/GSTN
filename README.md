@@ -30,7 +30,8 @@ Status:
 Star Attraction
 - JSON to CSV conversion
 - CSV to JSON conversion
-- Try on http://www.risersoft.com/community/gst/convert
+- CSV formats available on http://www.gstnirvana.com/community
+- Conversion sample on http://www.gstnirvana.com/community/convert
 
 GSP-ASP Non-Repdudiation
 - PGP Signature Generation and Verification
