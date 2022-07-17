@@ -3,8 +3,8 @@ GSTN API Client
 
 This project is an open source strongly typed client for GSTN APIs as per http://developer.gstsystem.co.in/apiportal/
 
-This work was born due to GST integration in Risersoft (www.risersoft.com) Maximprise manufacturing ERP (www.maximprise.com).
-Subsequently it was also used in Risersoft GstNirvana (www.gstnirvana.com).
+This work was born due to GST integration in Risersoft (www.risersoft.com) Maximprise manufacturing ERP (www.etomplan.com).
+Subsequently it was also used in Risersoft GstNirvana Project (www.risersoft.com/gst).
 
 We are releasing it into open source for the benefit of community and in accordance with our belief that GST requires rigorous collaboration on the part of everybody in the ecosystem.
 
@@ -30,7 +30,7 @@ Status:
 Star Attraction
 - JSON to CSV conversion
 - CSV to JSON conversion
-- Formats and test UI available on http://www.risersoft.com/community/gst
+- Formats and test UI available on www.livmatter.com/gst
 
 GSP-ASP Non-Repdudiation
 - PGP Signature Generation and Verification
